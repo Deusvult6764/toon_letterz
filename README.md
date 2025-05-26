@@ -6,7 +6,7 @@
 
  📰 What You Get
 
-- 🎭 Animated satire** of crypto's wildest weekly moments  
+- 🎭 Animated satire of crypto's wildest weekly moments  
 - 🧠 Curated news, made entertaining and memorable  
 - 🖼️ Mintable NFT versions of each issue on StarkNet  
 
