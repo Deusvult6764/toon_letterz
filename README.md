@@ -9,7 +9,7 @@
 - 🎭 Animated satire** of crypto's wildest weekly moments  
 - 🧠 Curated news, made entertaining and memorable  
 - 🖼️ Mintable NFT versions of each issue on StarkNet  
-- 🌗 Light & Dark mode for visual comfort
+
 
 ---
 
