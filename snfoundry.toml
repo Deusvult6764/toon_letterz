@@ -1,11 +1,5 @@
 
+[sncast.sepolia]
+url = "https://starknet-sepolia.g.alchemy.com/starknet/version/rpc/v0_8/******"
+account = "sepolia"
 
-[sncast.default]                                         
-url = "https://starknet-sepolia.infura.io/v3/*****"
-accounts-file = "~/.starknet_accounts/starknet_open_zeppelin_accounts.json"
-account = "account_braavos"
-
-[sncast.mainnet]
-account = "account_braavos_mainnet"
-accounts-file = "~/.starknet_accounts/starknet_open_zeppelin_accounts.json"
-url = "https://starknet-mainnet.infura.io/v3/******"

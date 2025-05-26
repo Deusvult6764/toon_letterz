@@ -1,5 +1,9 @@
 [package]
+<<<<<<< HEAD
 name = "toonletterz"
+=======
+name = "tlz"
+>>>>>>> c439e8c (Initial commit)
 version = "0.1.0"
 edition = "2024_07"
 
@@ -16,12 +20,17 @@ assert_macros = "2.11.4"
 [[target.starknet-contract]]
 sierra = true
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c439e8c (Initial commit)
 [scripts]
 test = "snforge test"
 
 [tool.scarb]
 allow-prebuilt-plugins = ["snforge_std"]
 
+<<<<<<< HEAD
 # Visit https://foundry-rs.github.io/starknet-foundry/appendix/scarb-toml.html for more information
 
 # [tool.snforge]                                             # Define `snforge` tool section
@@ -51,3 +60,5 @@ allow-prebuilt-plugins = ["snforge_std"]
 
 # [features]                                                 # Used for conditional compilation
 # enable_for_tests = []                                      # Feature name and list of other features that should be enabled with it
+=======
+>>>>>>> c439e8c (Initial commit)
