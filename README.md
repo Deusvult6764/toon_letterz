@@ -6,16 +6,16 @@
 
  📰 What You Get
 
-- 🎭 Animated satire of crypto's wildest weekly moments  
+- 🎭 Animated satire of crypto's wildest moments  
 - 🧠 Curated news, made entertaining and memorable  
-- 🖼️ Mintable NFT versions of each issue on StarkNet  
+- 🖼️ Mintable versions of each issue on StarkNet as collectibles.  
 
 
 ---
 
  🚀 Why Subscribe?
 
-Crypto is already weird. We just make it fun to follow.  
+Crypto is already unhinged. We just make it fun to follow.  
 If you love staying informed *and* entertained, ToonLetterz is for you.
 
 
