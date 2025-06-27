@@ -1,902 +1,2181 @@
 {
-    "name": "My workflow",
-    "nodes": [
-      {
-        "parameters": {
-          "pollTimes": {
-            "item": [
-              {
-                "hour": 20
-              }
-            ]
-          },
-          "feedUrl": "https://www.coindesk.com/arc/outboundfeeds/rss/"
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "hour": 20
+            }
+          ]
         },
-        "type": "n8n-nodes-base.rssFeedReadTrigger",
-        "typeVersion": 1,
-        "position": [
-          340,
-          160
-        ],
-        "id": "7a56333a-19f4-4986-8ef6-428a8fb1ad81",
-        "name": "RSS Feed Trigger"
+        "feedUrl": "https://www.coindesk.com/arc/outboundfeeds/rss/"
       },
-      {
-        "parameters": {
-          "operation": "appendOrUpdate",
-          "documentId": {
-            "__rl": true,
-            "value": "1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs",
-            "mode": "list",
-            "cachedResultName": "ToonLetterz Hackathon",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs/edit?usp=drivesdk"
+      "type": "n8n-nodes-base.rssFeedReadTrigger",
+      "typeVersion": 1,
+      "position": [
+        260,
+        960
+      ],
+      "id": "fdc4bffa-61c1-45d5-9cb4-8c4e9414de5a",
+      "name": "RSS Feed Trigger",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I",
+          "mode": "list",
+          "cachedResultName": "ToonLetterz Hackathon",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Link": "={{ $json.link }}",
+            "Title": "={{ $json.title }}",
+            "Date": "={{ $json.isoDate }}"
           },
-          "sheetName": {
-            "__rl": true,
-            "value": "gid=0",
-            "mode": "list",
-            "cachedResultName": "Sheet1",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs/edit#gid=0"
-          },
-          "columns": {
-            "mappingMode": "defineBelow",
-            "value": {
-              "Link": "={{ $json.link }}",
-              "Title": "={{ $json.title }}",
-              "Date": "={{ $json.isoDate }}"
+          "matchingColumns": [
+            "Link"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             },
-            "matchingColumns": [
-              "Link"
-            ],
-            "schema": [
-              {
-                "id": "Date",
-                "displayName": "Date",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": false
-              },
-              {
-                "id": "Link",
-                "displayName": "Link",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": false
-              },
-              {
-                "id": "Title",
-                "displayName": "Title",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true
-              },
-              {
-                "id": "ToonedTitle",
-                "displayName": "ToonedTitle",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "Video Prompt",
-                "displayName": "Video Prompt",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              }
-            ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.googleSheets",
-        "typeVersion": 4.5,
-        "position": [
-          580,
-          160
-        ],
-        "id": "807d71af-cdfd-41c7-8cd8-d59f8b317aa8",
-        "name": "Google Sheets",
-        "credentials": {
-          "googleSheetsOAuth2Api": {
-            "id": "Yi9GutkfMopm1QCf",
-            "name": "Google Sheets account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "modelName": "models/gemini-2.0-flash-thinking-exp-1219",
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-        "typeVersion": 1,
-        "position": [
-          780,
-          440
-        ],
-        "id": "09dbd1bc-99b3-432c-9f2a-69376a7307a7",
-        "name": "Google Gemini Chat Model",
-        "credentials": {
-          "googlePalmApi": {
-            "id": "IvO26NTha9tGwfKV",
-            "name": "Google Gemini(PaLM) Api account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "operation": "appendOrUpdate",
-          "documentId": {
-            "__rl": true,
-            "value": "1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs",
-            "mode": "list",
-            "cachedResultName": "ToonLetterz Hackathon",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs/edit?usp=drivesdk"
-          },
-          "sheetName": {
-            "__rl": true,
-            "value": "gid=0",
-            "mode": "list",
-            "cachedResultName": "Sheet1",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs/edit#gid=0"
-          },
-          "columns": {
-            "mappingMode": "defineBelow",
-            "value": {
-              "Title": "={{ $('RSS Feed Trigger').item.json.title }}",
-              "ToonedTitle": "={{ $json.text }}"
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
             },
-            "matchingColumns": [
-              "Title"
-            ],
-            "schema": [
-              {
-                "id": "Date",
-                "displayName": "Date",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "Link",
-                "displayName": "Link",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "Title",
-                "displayName": "Title",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": false
-              },
-              {
-                "id": "ToonedTitle",
-                "displayName": "ToonedTitle",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true
-              },
-              {
-                "id": "Video Prompt",
-                "displayName": "Video Prompt",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              }
-            ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.googleSheets",
-        "typeVersion": 4.5,
-        "position": [
-          1120,
-          160
-        ],
-        "id": "68bba4b4-345d-4daa-b214-9ce4327e3587",
-        "name": "Google Sheets1",
-        "credentials": {
-          "googleSheetsOAuth2Api": {
-            "id": "Yi9GutkfMopm1QCf",
-            "name": "Google Sheets account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "operation": "appendOrUpdate",
-          "documentId": {
-            "__rl": true,
-            "value": "1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs",
-            "mode": "list",
-            "cachedResultName": "ToonLetterz Hackathon",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs/edit?usp=drivesdk"
-          },
-          "sheetName": {
-            "__rl": true,
-            "value": "gid=0",
-            "mode": "list",
-            "cachedResultName": "Sheet1",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs/edit#gid=0"
-          },
-          "columns": {
-            "mappingMode": "defineBelow",
-            "value": {
-              "Title": "={{ $('RSS Feed Trigger').item.json.title }}",
-              "Video Prompt": "={{ $json.text }}"
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
             },
-            "matchingColumns": [
-              "Title"
-            ],
-            "schema": [
-              {
-                "id": "Date",
-                "displayName": "Date",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "Link",
-                "displayName": "Link",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "Title",
-                "displayName": "Title",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": false
-              },
-              {
-                "id": "ToonedTitle",
-                "displayName": "ToonedTitle",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "Video Prompt",
-                "displayName": "Video Prompt",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true
-              }
-            ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.googleSheets",
-        "typeVersion": 4.5,
-        "position": [
-          1720,
-          160
-        ],
-        "id": "8baaf8cb-0002-4aa8-8b98-e21deaf4f659",
-        "name": "Google Sheets2",
-        "credentials": {
-          "googleSheetsOAuth2Api": {
-            "id": "Yi9GutkfMopm1QCf",
-            "name": "Google Sheets account"
-          }
-        }
-      },
-      {
-        "parameters": {},
-        "type": "n8n-nodes-base.manualTrigger",
-        "typeVersion": 1,
-        "position": [
-          280,
-          920
-        ],
-        "id": "9be1719d-9767-487d-a34f-a6784b704704",
-        "name": "When clicking ‘Test workflow’"
-      },
-      {
-        "parameters": {
-          "documentId": {
-            "__rl": true,
-            "value": "1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs",
-            "mode": "list",
-            "cachedResultName": "ToonLetterz Hackathon",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs/edit?usp=drivesdk"
-          },
-          "sheetName": {
-            "__rl": true,
-            "value": 1999523186,
-            "mode": "list",
-            "cachedResultName": "Sheet2",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs/edit#gid=1999523186"
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.googleSheets",
-        "typeVersion": 4.5,
-        "position": [
-          520,
-          920
-        ],
-        "id": "02fb31f6-d64a-4a8d-8c1d-cb012aad29b7",
-        "name": "Google Sheets5",
-        "credentials": {
-          "googleSheetsOAuth2Api": {
-            "id": "QfVFTJFF2q6FogLE",
-            "name": "Google Sheets account 2"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "options": {}
-        },
-        "type": "n8n-nodes-base.splitInBatches",
-        "typeVersion": 3,
-        "position": [
-          740,
-          920
-        ],
-        "id": "ce125950-14bf-4396-9880-cd8c44bc0420",
-        "name": "Loop Over Items"
-      },
-      {
-        "parameters": {
-          "assignments": {
-            "assignments": [
-              {
-                "id": "a8604bce-0b41-4b7f-8be0-392ec4cec4eb",
-                "name": "name",
-                "value": "={{ $json.name }}",
-                "type": "string"
-              },
-              {
-                "id": "d4d1b463-1bb6-4a24-bda6-1d7014c63b3d",
-                "name": "email",
-                "value": "={{ $json.email }}",
-                "type": "string"
-              },
-              {
-                "id": "9612a08b-3554-4b72-b787-35b6d87ec0b1",
-                "name": "video link",
-                "value": "={{ $json['video link'] }}",
-                "type": "string"
-              }
-            ]
-          },
-          "options": {}
-        },
-        "type": "n8n-nodes-base.set",
-        "typeVersion": 3.4,
-        "position": [
-          960,
-          1020
-        ],
-        "id": "e90e622b-237e-41d4-832b-fbb9867fa1cc",
-        "name": "Edit Fields"
-      },
-      {
-        "parameters": {
-          "descriptionType": "manual",
-          "toolDescription": "Update row in sheet in Google Sheets",
-          "operation": "update",
-          "documentId": {
-            "__rl": true,
-            "value": "1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs",
-            "mode": "list",
-            "cachedResultName": "ToonLetterz Hackathon",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs/edit?usp=drivesdk"
-          },
-          "sheetName": {
-            "__rl": true,
-            "value": 1999523186,
-            "mode": "list",
-            "cachedResultName": "Sheet2",
-            "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1BslG1k-5tBuyQ4iCvVyyv8k3XuX2KsSDd9lVbRlywLs/edit#gid=1999523186"
-          },
-          "columns": {
-            "mappingMode": "defineBelow",
-            "value": {
-              "email": "{{ $('Loop Over Items').item.json.email }}",
-              "newsletter sent": "sent"
+            {
+              "id": "ToonedTitle",
+              "displayName": "ToonedTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
             },
-            "matchingColumns": [
-              "email"
-            ],
-            "schema": [
-              {
-                "id": "name",
-                "displayName": "name",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "email",
-                "displayName": "email",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": false
-              },
-              {
-                "id": "video link",
-                "displayName": "video link",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": true
-              },
-              {
-                "id": "newsletter sent",
-                "displayName": "newsletter sent",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "removed": false
-              },
-              {
-                "id": "row_number",
-                "displayName": "row_number",
-                "required": false,
-                "defaultMatch": false,
-                "display": true,
-                "type": "string",
-                "canBeUsedToMatch": true,
-                "readOnly": true,
-                "removed": true
-              }
-            ],
-            "attemptToConvertTypes": false,
-            "convertFieldsToString": false
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        500,
+        960
+      ],
+      "id": "141332c5-80a0-4c3e-933e-80125ab03f3e",
+      "name": "Google Sheets",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-thinking-exp-1219",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        700,
+        1240
+      ],
+      "id": "de57d792-e53b-4213-82ec-545f3ba5fedf",
+      "name": "Google Gemini Chat Model",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I",
+          "mode": "list",
+          "cachedResultName": "ToonLetterz Hackathon",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ToonedTitle": "={{ $json.text }}",
+            "Title": "={{ $('RSS Feed Trigger').item.json.title }}"
           },
-          "options": {}
+          "matchingColumns": [
+            "Title"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ToonedTitle",
+              "displayName": "ToonedTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
         },
-        "type": "n8n-nodes-base.googleSheetsTool",
-        "typeVersion": 4.5,
-        "position": [
-          1320,
-          1260
-        ],
-        "id": "add0b6b7-86c4-4e8a-894d-5f57c49553d9",
-        "name": "Google Sheets6",
-        "credentials": {
-          "googleSheetsOAuth2Api": {
-            "id": "QfVFTJFF2q6FogLE",
-            "name": "Google Sheets account 2"
-          }
-        }
+        "options": {}
       },
-      {
-        "parameters": {
-          "sendTo": "={{ $('Loop Over Items').item.json.email }}",
-          "subject": "=Your Toon'd Letter has arrived!",
-          "emailType": "text",
-          "message": "=In this episode {{ $('Loop Over Items').item.json.name }}, you'll find the most recent happenings in the crypto space over the past three days. Enjoy and stay Toon'd! {{ $('Loop Over Items').item.json['video link'] }}\n\nMINT TOONLETTER",
-          "options": {
-            "appendAttribution": false
-          }
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1040,
+        960
+      ],
+      "id": "07e7ebe7-4f0a-48e7-940e-0540b4317f26",
+      "name": "Google Sheets1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I",
+          "mode": "list",
+          "cachedResultName": "ToonLetterz Hackathon",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit?usp=drivesdk"
         },
-        "type": "n8n-nodes-base.gmailTool",
-        "typeVersion": 2.1,
-        "position": [
-          1520,
-          1240
-        ],
-        "id": "cd5c6053-087e-40e3-9b5f-86a657082b01",
-        "name": "Gmail1",
-        "webhookId": "4325b36f-09fd-444b-9957-7d7ecbe3a4c6",
-        "credentials": {
-          "gmailOAuth2": {
-            "id": "4klCFBzKeNo2o1EP",
-            "name": "Gmail account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "sendTo": "jambocalamari@mail.com",
-          "subject": "=Email sent to  {{ $('Loop Over Items').item.json.email }}",
-          "emailType": "text",
-          "message": "=The is to confirm that email has been sent to  {{ $('Loop Over Items').item.json.name }} with the email address {{ $('Loop Over Items').item.json.email }}",
-          "options": {
-            "appendAttribution": false
-          }
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16eNjD5HLfsLaTa7FNoSKYyIO_6ZNNKZHImTlkxyloQM/edit#gid=0"
         },
-        "type": "n8n-nodes-base.gmail",
-        "typeVersion": 2.1,
-        "position": [
-          1680,
-          1020
-        ],
-        "id": "5abba2c6-07d0-47c9-ad04-57200a27bd95",
-        "name": "Gmail",
-        "webhookId": "bb6b27f6-f81d-4af2-b75a-71b6ede92a6b",
-        "credentials": {
-          "gmailOAuth2": {
-            "id": "4klCFBzKeNo2o1EP",
-            "name": "Gmail account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "content": "VIDEO WORKFLOW",
-          "height": 640,
-          "width": 2080,
-          "color": 4
-        },
-        "type": "n8n-nodes-base.stickyNote",
-        "position": [
-          0,
-          0
-        ],
-        "typeVersion": 1,
-        "id": "7f1e9b59-a358-4108-b14e-5e615e27db1c",
-        "name": "Sticky Note"
-      },
-      {
-        "parameters": {
-          "content": "EMAIL WORKFLOW",
-          "height": 580,
-          "width": 2080,
-          "color": 6
-        },
-        "type": "n8n-nodes-base.stickyNote",
-        "position": [
-          0,
-          860
-        ],
-        "typeVersion": 1,
-        "id": "ba30a775-31b9-4c5f-afa1-b40e1d83f601",
-        "name": "Sticky Note1"
-      },
-      {
-        "parameters": {
-          "promptType": "define",
-          "text": "=Newsletter subscribers need to be sent an email! \n\nHere are the details: \nName:  {{ $json.name }}\nEmail: {{ $json.email }}\n\n\nSend an email with Gmail to this user. \nAfter sending, update the \"Newsletter sent\" status in Gogle Sheets.\nFinally, send a confirmation email to notify the task is completed.",
-          "options": {
-            "systemMessage": "You are a helpful assistant.\n\nFor each contact in the loop:\n# Retrieve the subscriber details(name, email) from Google Sheets.\n## Send a personalized email using Gmail.\n### Update the \"Newsletter Sent\" status in Google Sheets. \n#### Send a confirmation to yourself after each email is sent. \n\n#####Ensure each step is successfully completed before processing the next contact.\n"
-          }
-        },
-        "type": "@n8n/n8n-nodes-langchain.agent",
-        "typeVersion": 1.9,
-        "position": [
-          1180,
-          1020
-        ],
-        "id": "41156a7d-9891-4b4f-9c59-f77d66498622",
-        "name": "BRAIN BOX"
-      },
-      {
-        "parameters": {
-          "promptType": "define",
-          "text": "={{ $json.Title }}",
-          "messages": {
-            "messageValues": [
-              {
-                "message": "ROLE: You are an expert prompt engineer adept at rewriting titles with humor and sarcasm to make it super interesting.\n\nTASK: rewrite title and summarize the news with humor and sarcasm to make it super interesting.\n\nThe summary should be no more two sentences of 10 - 18 words. Do not create a line break at the end."
-              }
-            ]
-          }
-        },
-        "type": "@n8n/n8n-nodes-langchain.chainLlm",
-        "typeVersion": 1.6,
-        "position": [
-          760,
-          160
-        ],
-        "id": "de3e01cf-102c-4cd0-9aa0-f66df4053919",
-        "name": "PROMPT 1"
-      },
-      {
-        "parameters": {
-          "promptType": "define",
-          "text": "={{ $json.ToonedTitle }}",
-          "messages": {
-            "messageValues": [
-              {
-                "message": "=ROLE:You are an expert prompt engineer adept at generating excellent 2d ghibli-styled video prompts from texts to create interesting, humorous and sarcastic results.  \n\nTASK:  Generate the prompt for the video using {{ $json.ToonedTitle }} that perfectly depicts that {{ $json.ToonedTitle }} with humor and sarcasm. Ensure it is detailed, colorful and interesting. \n\n# NOTE: Make sure the prompts while humourous is interesting and relatable for adults too. It shouldn't be childish.\n\n##NOTE: Ensure it is strictly the prompt without extra descriptive texts and line breaks.\n\n\n\n#There should be no text describing the prompt or it's style. \n"
-              }
-            ]
-          }
-        },
-        "type": "@n8n/n8n-nodes-langchain.chainLlm",
-        "typeVersion": 1.6,
-        "position": [
-          1320,
-          160
-        ],
-        "id": "48d734b7-fbd8-43dc-8362-33d433b09771",
-        "name": "PROMPT 2"
-      },
-      {
-        "parameters": {
-          "modelName": "models/gemini-2.0-flash-thinking-exp-1219",
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
-        "typeVersion": 1,
-        "position": [
-          1360,
-          380
-        ],
-        "id": "7280a741-0f46-445a-9031-1c181d484e8b",
-        "name": "Google Gemini Chat Model1",
-        "credentials": {
-          "googlePalmApi": {
-            "id": "IvO26NTha9tGwfKV",
-            "name": "Google Gemini(PaLM) Api account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "model": {
-            "__rl": true,
-            "mode": "list",
-            "value": "gpt-4o-mini"
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $('RSS Feed Trigger').item.json.title }}",
+            "Video Prompt": "={{ $json.text }}"
           },
-          "options": {}
+          "matchingColumns": [
+            "Title"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ToonedTitle",
+              "displayName": "ToonedTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
         },
-        "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
-        "typeVersion": 1.2,
-        "position": [
-          1140,
-          1260
-        ],
-        "id": "ae848e53-df7f-4432-b4db-8a7224cc7f68",
-        "name": "OpenAI Chat Model",
-        "credentials": {
-          "openAiApi": {
-            "id": "L5NMAfastQFCMM3K",
-            "name": "n8n free OpenAI API credits"
-          }
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1640,
+        960
+      ],
+      "id": "9bf0a170-7802-45e8-bdf7-8a7f386cae25",
+      "name": "Google Sheets2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-thinking-exp-1219",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        1220
+      ],
+      "id": "a47ec844-d1cb-411c-aeaa-bc710449de16",
+      "name": "Google Gemini Chat Model1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I",
+          "mode": "list",
+          "cachedResultName": "ToonLetterz Hackathon",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 109729202,
+          "mode": "list",
+          "cachedResultName": "Sheet2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit#gid=109729202"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        540,
+        2400
+      ],
+      "id": "9d668a01-09c7-492e-9c67-b5d50fe0680b",
+      "name": "Google Sheets5",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        760,
+        2400
+      ],
+      "id": "e2565208-a008-4fb1-99e9-fa93f5d04191",
+      "name": "Loop Over Items",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "a8604bce-0b41-4b7f-8be0-392ec4cec4eb",
+              "name": "name",
+              "value": "={{ $json.name }}",
+              "type": "string"
+            },
+            {
+              "id": "d4d1b463-1bb6-4a24-bda6-1d7014c63b3d",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "9612a08b-3554-4b72-b787-35b6d87ec0b1",
+              "name": "video link",
+              "value": "={{ $json['video link'] }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.4,
+      "position": [
+        980,
+        2500
+      ],
+      "id": "5ba7c365-66cb-406e-9021-b086a2fedb07",
+      "name": "Edit Fields",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "=Read, update and write data to Google Sheets",
+        "operation": "update",
+        "documentId": {
+          "__rl": true,
+          "value": "1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I",
+          "mode": "list",
+          "cachedResultName": "ToonLetterz Hackathon",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 109729202,
+          "mode": "list",
+          "cachedResultName": "Sheet2",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit#gid=109729202"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "email": "={{ $('Loop Over Items').item.json.email }}",
+            "newsletter sent": "Sent"
+          },
+          "matchingColumns": [
+            "email"
+          ],
+          "schema": [
+            {
+              "id": "name",
+              "displayName": "name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "video link",
+              "displayName": "video link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "newsletter sent",
+              "displayName": "newsletter sent",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "row_number",
+              "displayName": "row_number",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "readOnly": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.5,
+      "position": [
+        1340,
+        2740
+      ],
+      "id": "6186a950-d538-49f1-ada2-b37c714a40db",
+      "name": "Google Sheets6",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $('Loop Over Items').item.json.email }}",
+        "subject": "=Your Toon'd Letter has arrived!",
+        "emailType": "text",
+        "message": "=In this episode {{ $('Loop Over Items').item.json.name }}, you'll find the most recent happenings in the crypto space over the past three days. Enjoy and stay Toon'd! {{ $('Loop Over Items').item.json['video link'] }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmailTool",
+      "typeVersion": 2.1,
+      "position": [
+        1540,
+        2720
+      ],
+      "id": "539cd9f6-7270-490c-a714-4895a05cc443",
+      "name": "Gmail1",
+      "webhookId": "4325b36f-09fd-444b-9957-7d7ecbe3a4c6",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "sendTo": "deusvult6764@mail.com",
+        "subject": "=Email sent to  {{ $('Loop Over Items').item.json.email }}",
+        "emailType": "text",
+        "message": "=The is to confirm that email has been sent to  {{ $('Loop Over Items').item.json.name }} with the email address {{ $('Loop Over Items').item.json.email }}",
+        "options": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.1,
+      "position": [
+        1700,
+        2500
+      ],
+      "id": "a5501c34-7d3b-4797-bfc7-7e06cca1c24d",
+      "name": "Gmail",
+      "webhookId": "bb6b27f6-f81d-4af2-b75a-71b6ede92a6b",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "VIDEO WORKFLOW (manual trigger)",
+        "height": 640,
+        "width": 2080,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        1540
+      ],
+      "typeVersion": 1,
+      "id": "3e9f65e9-4b5d-4a7e-aa58-d31ad6a6e18e",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "EMAIL WORKFLOW",
+        "height": 580,
+        "width": 2080,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        20,
+        2340
+      ],
+      "typeVersion": 1,
+      "id": "14ac862f-6d2f-4730-95d5-e45596cfb513",
+      "name": "Sticky Note1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Newsletter subscribers need to be sent an email! \n\nHere are the details: \nName:  {{ $json.name }}\nEmail: {{ $json.email }}\n\n\nSend an email with Gmail to this user. \nAfter sending, update the \"Newsletter sent\" status in Gogle Sheets.\nFinally, send a confirmation email to notify the task is completed.",
+        "options": {
+          "systemMessage": "You are a helpful assistant.\n\nFor each contact in the loop:\n# Retrieve the subscriber details(name, email) from Google Sheets.\n## Send a personalized email using Gmail.\n### Update the \"Newsletter Sent\" status in Google Sheets. \n#### Send a confirmation to yourself after each email is sent. \n\n#####Ensure each step is successfully completed before processing the next contact.\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.9,
+      "position": [
+        1200,
+        2500
+      ],
+      "id": "0cd22b94-4b02-481e-b0f5-5fd6a9421ef5",
+      "name": "BRAIN BOX",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Title }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "ROLE: You are an expert prompt engineer adept at rewriting titles with humor and sarcasm to make it super interesting.\n\nTASK: rewrite title and summarize the news with humor and sarcasm to make it super interesting.\n\nThe summary should be no more two sentences of 10 - 18 words. Do not create a line break at the end."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        680,
+        960
+      ],
+      "id": "775c05e9-fb56-49e7-ae4c-b8f8bcdd2e4f",
+      "name": "PROMPT 1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.ToonedTitle }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=ROLE:You are an expert prompt engineer adept at generating excellent 2d ghibli-styled video prompts from texts to create interesting, humorous and sarcastic results.  \n\nTASK:  Generate the prompt for the video using {{ $json.ToonedTitle }} that perfectly depicts that {{ $json.ToonedTitle }} with humor and sarcasm. Ensure it is detailed, colorful and interesting. \n\n# NOTE: Make sure the prompts while humourous is interesting and relatable for adults too. It shouldn't be childish.\n\n##NOTE: Ensure it is strictly the prompt without extra descriptive texts and line breaks.\n\n\n\n#There should be no text describing the prompt or it's style. \n"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1240,
+        960
+      ],
+      "id": "52c95b9a-634d-46d6-afb5-76ba1c4dea64",
+      "name": "PROMPT 2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-thinking-exp-1219",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1080,
+        2760
+      ],
+      "id": "efb241a0-ecfc-4dc5-ac77-1ab116d93bbc",
+      "name": "Google Gemini Chat Model2",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "hour": 20
+            }
+          ]
+        },
+        "feedUrl": "https://www.coindesk.com/arc/outboundfeeds/rss/"
+      },
+      "type": "n8n-nodes-base.rssFeedReadTrigger",
+      "typeVersion": 1,
+      "position": [
+        140,
+        1700
+      ],
+      "id": "872ac67c-b79a-40b4-a5e5-5d2175a00c60",
+      "name": "RSS Feed Trigger1",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I",
+          "mode": "list",
+          "cachedResultName": "ToonLetterz Hackathon",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Link": "={{ $json.link }}",
+            "Title": "={{ $json.title }}",
+            "Date": "={{ $json.isoDate }}"
+          },
+          "matchingColumns": [
+            "Link"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ToonedTitle",
+              "displayName": "ToonedTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        360,
+        1720
+      ],
+      "id": "e3b48fa2-3f7a-4957-bdca-21b5a15523c7",
+      "name": "Google Sheets3",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-thinking-exp-1219",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        580,
+        1920
+      ],
+      "id": "a1bfb3a9-4df8-4c1c-b90e-dcf7075aafa2",
+      "name": "Google Gemini Chat Model3",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I",
+          "mode": "list",
+          "cachedResultName": "ToonLetterz Hackathon",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ToonedTitle": "={{ $json.text }}",
+            "Title": "={{ $('RSS Feed Trigger1').item.json.title }}"
+          },
+          "matchingColumns": [
+            "Title"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ToonedTitle",
+              "displayName": "ToonedTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1100,
+        1720
+      ],
+      "id": "2798d74a-dd43-4f4c-9662-2bde04658ed9",
+      "name": "Google Sheets4",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I",
+          "mode": "list",
+          "cachedResultName": "ToonLetterz Hackathon",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1bTWEfUb06zXerCIyn52bfdA7qPWaAfDE5JGNFSp4t0I/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/16eNjD5HLfsLaTa7FNoSKYyIO_6ZNNKZHImTlkxyloQM/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $('RSS Feed Trigger1').item.json.title }}",
+            "Video Prompt": "={{ $json.text }}"
+          },
+          "matchingColumns": [
+            "Title"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ToonedTitle",
+              "displayName": "ToonedTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1840,
+        1660
+      ],
+      "id": "4e3edae8-84d0-45e6-a6e2-2577e8c509c0",
+      "name": "Google Sheets7",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-thinking-exp-1219",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1620,
+        1920
+      ],
+      "id": "b5e56518-304f-4d49-99a7-6e152be2d104",
+      "name": "Google Gemini Chat Model4",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "content": "VIDEO WORKFLOW(coindesk)",
+        "height": 640,
+        "width": 2080,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        780
+      ],
+      "typeVersion": 1,
+      "id": "96211ed7-c526-4c54-a264-3be18f3d7be2",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Title }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "ROLE: You are an expert prompt engineer adept at rewriting titles with humor and sarcasm to make it super interesting.\n\nTASK: rewrite title and summarize the news with humor and sarcasm to make it super interesting.\n\nThe summary should be no more two sentences of 10 - 18 words. Do not create a line break at the end."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        680,
+        1680
+      ],
+      "id": "2f668ae2-5030-4a7c-95c5-46519a0861d8",
+      "name": "PROMPT ",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.ToonedTitle }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=ROLE:You are an expert prompt engineer adept at generating excellent 2d ghibli-styled video prompts from texts to create interesting, humorous and sarcastic results.  \n\nTASK:  Generate the prompt for the video using {{ $json.ToonedTitle }} that perfectly depicts that {{ $json.ToonedTitle }} with humor and sarcasm. Ensure it is detailed, colorful and interesting. \n\n# NOTE: Make sure the prompts while humourous is interesting and relatable for adults too. It shouldn't be childish.\n\n##NOTE: Ensure it is strictly the prompt without extra descriptive texts and line breaks.\n\n\n\n#There should be no text describing the prompt or it's style. \n"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1420,
+        1600
+      ],
+      "id": "9e22dcfa-71a5-434b-9050-18f05ea2d5f2",
+      "name": "PROMPT 3",
+      "disabled": true
+    },
+    {
+      "parameters": {
+        "pollTimes": {
+          "item": [
+            {
+              "mode": "everyHour"
+            }
+          ]
+        },
+        "feedUrl": "https://cointelegraph.com/rss"
+      },
+      "type": "n8n-nodes-base.rssFeedReadTrigger",
+      "typeVersion": 1,
+      "position": [
+        260,
+        180
+      ],
+      "id": "fd59ee9e-a159-425c-a689-cc9cba57f812",
+      "name": "RSS Feed Trigger2"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0",
+          "mode": "list",
+          "cachedResultName": "CryptoParkToons",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $json.title }}",
+            "Date": "={{ $json.isoDate }}",
+            "Link": "={{ $json.link }}"
+          },
+          "matchingColumns": [
+            "Title"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ToonedTitle",
+              "displayName": "ToonedTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        500,
+        180
+      ],
+      "id": "bdedd610-f3a5-45d3-9124-9a9b303966e0",
+      "name": "Google Sheets8",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gh531qwuyaW3P0xT",
+          "name": "Google Sheets account 3"
         }
       }
-    ],
-    "pinData": {},
-    "connections": {
-      "RSS Feed Trigger": {
-        "main": [
-          [
-            {
-              "node": "Google Sheets",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-thinking-exp-1219",
+        "options": {}
       },
-      "Google Sheets": {
-        "main": [
-          [
-            {
-              "node": "PROMPT 1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Google Gemini Chat Model": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "PROMPT 1",
-              "type": "ai_languageModel",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Google Sheets1": {
-        "main": [
-          [
-            {
-              "node": "PROMPT 2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "When clicking ‘Test workflow’": {
-        "main": [
-          [
-            {
-              "node": "Google Sheets5",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Google Sheets5": {
-        "main": [
-          [
-            {
-              "node": "Loop Over Items",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Loop Over Items": {
-        "main": [
-          [],
-          [
-            {
-              "node": "Edit Fields",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Edit Fields": {
-        "main": [
-          [
-            {
-              "node": "BRAIN BOX",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Google Sheets6": {
-        "ai_tool": [
-          [
-            {
-              "node": "BRAIN BOX",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Gmail1": {
-        "ai_tool": [
-          [
-            {
-              "node": "BRAIN BOX",
-              "type": "ai_tool",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "BRAIN BOX": {
-        "main": [
-          [
-            {
-              "node": "Gmail",
-              "type": "main",
-              "index": 0
-            },
-            {
-              "node": "Loop Over Items",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "PROMPT 1": {
-        "main": [
-          [
-            {
-              "node": "Google Sheets1",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "PROMPT 2": {
-        "main": [
-          [
-            {
-              "node": "Google Sheets2",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Google Gemini Chat Model1": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "PROMPT 2",
-              "type": "ai_languageModel",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "OpenAI Chat Model": {
-        "ai_languageModel": [
-          [
-            {
-              "node": "BRAIN BOX",
-              "type": "ai_languageModel",
-              "index": 0
-            }
-          ]
-        ]
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        700,
+        460
+      ],
+      "id": "3646a18f-f967-4322-b813-6c5348d53894",
+      "name": "Google Gemini Chat Model5",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d7pCiCzb15uc11gQ",
+          "name": "Google Gemini(PaLM) Api account"
+        }
       }
     },
-    "active": true,
-    "settings": {
-      "executionOrder": "v1"
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0",
+          "mode": "list",
+          "cachedResultName": "CryptoParkToons",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $('Google Sheets8').item.json.Title }}",
+            "ToonedTitle": "={{ $json.text }}"
+          },
+          "matchingColumns": [
+            "Title"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ToonedTitle",
+              "displayName": "ToonedTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1040,
+        180
+      ],
+      "id": "8dbb0ccf-86a0-4b58-80c1-87af9199d87b",
+      "name": "Google Sheets9",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gh531qwuyaW3P0xT",
+          "name": "Google Sheets account 3"
+        }
+      }
     },
-    "versionId": "091514d6-9789-49b2-be52-90c92b689bb6",
-    "meta": {
-      "templateCredsSetupCompleted": true,
-      "instanceId": "6fce2615b7572bae25c5298cc5452e8481d0bd232ccaa8dfe11c50d95d44ac36"
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0",
+          "mode": "list",
+          "cachedResultName": "CryptoParkToons",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Sheet1",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $('Google Sheets9').item.json.Title }}",
+            "Video Prompt": "={{ $json.text }}"
+          },
+          "matchingColumns": [
+            "Title"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ToonedTitle",
+              "displayName": "ToonedTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        1640,
+        180
+      ],
+      "id": "3a2cdfbb-6622-41ae-88d7-8bbdc784c242",
+      "name": "Google Sheets10",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gh531qwuyaW3P0xT",
+          "name": "Google Sheets account 3"
+        }
+      }
     },
-    "id": "fEPF0ghKMjtQknfh",
-    "tags": []
-  }
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Title }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "ROLE: You are an expert prompt engineer adept at rewriting titles with humor and sarcasm to make it super interesting.\n\nTASK: rewrite title and summarize the news with humor and sarcasm to make it super interesting.\n\nThe summary should be no more two sentences of 10 - 18 words. Do not create a line break at the end."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        680,
+        180
+      ],
+      "id": "b5698913-570b-40e0-959b-69bc0bff0f5d",
+      "name": "PROMPT 4"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.ToonedTitle }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=ROLE:You are an expert prompt engineer adept at generating excellent 2d southpark-inspired video prompts from texts to create interesting, humorous and sarcastic prompts for animated video.  Do well not to copy but rather create unique scenes and character that are inspired by Southpark.\n\nTASK:  Generate the prompt for the video using {{ $json.ToonedTitle }} that perfectly depicts that {{ $json.ToonedTitle }} with humor and sarcasm. Ensure it is detailed, colorful and interesting.  \n\n NOTE: Make sure the prompts while humourous is interesting and relatable for adults too. It shouldn't be childish.\n\n##NOTE: Ensure it is strictly the prompt without extra descriptive texts and line breaks.\n\n\n\n#There should be no text describing the prompt or it's style. \n"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        1240,
+        180
+      ],
+      "id": "7e4753de-5eaf-4a3b-8beb-8494a0287b52",
+      "name": "PROMPT 5"
+    },
+    {
+      "parameters": {
+        "content": "VIDEO WORKFLOW (cointelegraoh)",
+        "height": 640,
+        "width": 2080,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        0,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "f6e78609-af88-4094-9d7a-be38bab82841",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0",
+          "mode": "list",
+          "cachedResultName": "CryptoParkToons",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1754726049,
+          "mode": "list",
+          "cachedResultName": "Manual trigger",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit#gid=1754726049"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $('Google Sheets11').item.json.Title }}",
+            "ToonedTitle": "={{ $json.text }}"
+          },
+          "matchingColumns": [
+            "Title"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ToonedTitle",
+              "displayName": "ToonedTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        3580,
+        100
+      ],
+      "id": "2b124875-9744-4b5c-9faa-86cf5b3ef2e6",
+      "name": "Google Sheets12",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gh531qwuyaW3P0xT",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "appendOrUpdate",
+        "documentId": {
+          "__rl": true,
+          "value": "1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0",
+          "mode": "list",
+          "cachedResultName": "CryptoParkToons",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1754726049,
+          "mode": "list",
+          "cachedResultName": "Manual trigger",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit#gid=1754726049"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Title": "={{ $('Google Sheets11').item.json.Title }}",
+            "Video Prompt": "={{ $json.text }}"
+          },
+          "matchingColumns": [
+            "Title"
+          ],
+          "schema": [
+            {
+              "id": "Date",
+              "displayName": "Date",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Link",
+              "displayName": "Link",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Title",
+              "displayName": "Title",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": false
+            },
+            {
+              "id": "ToonedTitle",
+              "displayName": "ToonedTitle",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true,
+              "removed": true
+            },
+            {
+              "id": "Video Prompt",
+              "displayName": "Video Prompt",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        4440,
+        100
+      ],
+      "id": "6bba408a-87fb-4a41-b7ef-da4f9806fac9",
+      "name": "Google Sheets13",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gh531qwuyaW3P0xT",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.Title }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "ROLE: You are an expert prompt engineer adept at rewriting titles with humor and sarcasm to make it super interesting.\n\nTASK: rewrite title and summarize the news with humor and sarcasm to make it super interesting.\n\nThe summary should be no more two sentences of 10 - 18 words. Do not create a line break at the end."
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        3140,
+        100
+      ],
+      "id": "d8b77bd4-f53d-4785-b4ed-36a229ecc009",
+      "name": "PROMPT 6"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.ToonedTitle }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=ROLE:You are an expert prompt engineer adept at generating excellent 2d southpark-inspired video prompts from texts to create interesting, humorous and sarcastic prompts for animated video.  Do well not to copy but rather create unique scenes and character that are inspired by Southpark.\n\nTASK:  Generate the prompt for the video using {{ $json.ToonedTitle }} that perfectly depicts that {{ $json.ToonedTitle }} with humor and sarcasm. Ensure it is detailed, colorful and interesting.  \n\n NOTE: Make sure the prompts while humourous is interesting and relatable for adults too. It shouldn't be childish.\n\n##NOTE: Ensure it is strictly the prompt without extra descriptive texts and line breaks.\n\n\n\n#There should be no text describing the prompt or it's style. \n"
+            }
+          ]
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.6,
+      "position": [
+        3960,
+        100
+      ],
+      "id": "eb5efc08-7356-4132-9683-0f65bd30a99a",
+      "name": "PROMPT 7"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        2400,
+        100
+      ],
+      "id": "b127383a-d402-4e43-9842-51f9945efde6",
+      "name": "When clicking ‘Execute workflow’"
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "value": "1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0",
+          "mode": "list",
+          "cachedResultName": "CryptoParkToons",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 1754726049,
+          "mode": "list",
+          "cachedResultName": "Manual trigger",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1Sbli4vJ-H1htbGJTRoeocGTA9JcQFDiaYa5c437kML0/edit#gid=1754726049"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.5,
+      "position": [
+        2780,
+        100
+      ],
+      "id": "a57454a4-c15c-4337-8cde-5b3b67948f07",
+      "name": "Google Sheets11",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "gh531qwuyaW3P0xT",
+          "name": "Google Sheets account 3"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-thinking-exp-1219",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1280,
+        420
+      ],
+      "id": "e67bac72-81a6-4263-9359-fe5683b1a61f",
+      "name": "Google Gemini Chat Model9",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d7pCiCzb15uc11gQ",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-thinking-exp-1219",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        3060,
+        400
+      ],
+      "id": "65997e83-6f7d-436a-9244-f51a46498d82",
+      "name": "Google Gemini Chat Model10",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d7pCiCzb15uc11gQ",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.0-flash-thinking-exp-1219",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        4100,
+        380
+      ],
+      "id": "7880a531-776f-49ee-9e28-4e1bad3315bd",
+      "name": "Google Gemini Chat Model6",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "d7pCiCzb15uc11gQ",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "RSS Feed Trigger": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "PROMPT 1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "PROMPT 1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets1": {
+      "main": [
+        [
+          {
+            "node": "PROMPT 2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "PROMPT 2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets5": {
+      "main": [
+        [
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Loop Over Items": {
+      "main": [
+        [],
+        [
+          {
+            "node": "Edit Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Edit Fields": {
+      "main": [
+        [
+          {
+            "node": "BRAIN BOX",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets6": {
+      "ai_tool": [
+        [
+          {
+            "node": "BRAIN BOX",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gmail1": {
+      "ai_tool": [
+        [
+          {
+            "node": "BRAIN BOX",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "BRAIN BOX": {
+      "main": [
+        [
+          {
+            "node": "Gmail",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Loop Over Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PROMPT 1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PROMPT 2": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model2": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "BRAIN BOX",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Feed Trigger1": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets3": {
+      "main": [
+        [
+          {
+            "node": "PROMPT ",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model3": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "PROMPT ",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets4": {
+      "main": [
+        [
+          {
+            "node": "PROMPT 3",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model4": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "PROMPT 3",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PROMPT ": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PROMPT 3": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "RSS Feed Trigger2": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets8",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets8": {
+      "main": [
+        [
+          {
+            "node": "PROMPT 4",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model5": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "PROMPT 4",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets9": {
+      "main": [
+        [
+          {
+            "node": "PROMPT 5",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PROMPT 4": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets9",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PROMPT 5": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets10",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets12": {
+      "main": [
+        [
+          {
+            "node": "PROMPT 7",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PROMPT 6": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets12",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "PROMPT 7": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets13",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "When clicking ‘Execute workflow’": {
+      "main": [
+        [
+          {
+            "node": "Google Sheets11",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Sheets11": {
+      "main": [
+        [
+          {
+            "node": "PROMPT 6",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model9": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "PROMPT 5",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model10": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "PROMPT 6",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model6": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "PROMPT 7",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "b2a2c73c-c768-467c-aa1b-88bc32e3f4d5",
+  "meta": {
+    "instanceId": "f1fd927fb9fd1c6c2fe733961d2641dc40ad5214585e95b69410dfb2d2ff98bd"
+  },
+  "id": "VuNSAiDD1ZfwcUAV",
+  "tags": []
+}
