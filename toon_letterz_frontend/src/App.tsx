@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAccount, useConnect, useDisconnect, useContract } from '@starknet-react/core';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Zap, ArrowRight, ChevronDown, Star, Eye, Calendar, Users, Sparkles, Trophy, Rocket, Coins, TrendingUp, Flame, Menu, X, Brain, Palette, Lightbulb, MessageCircle, Smile, AlertCircle, CheckCircle } from 'lucide-react';
@@ -11,13 +11,11 @@ import AnimatedText from './components/AnimatedText';
 import ParticleField from './components/ParticleField';
 import ScrollReveal from './components/ScrollReveal';
 import HolographicCard from './components/HolographicCard';
-import ThemeToggle from './components/ThemeToggle';
-import { ThemeProvider } from './contexts/ThemeContext';
 
 // Contract ABI
 import toonLetterzAbi from './toonLetterzAbi.json';
 
-function AppContent() {
+function App() {
   const { address, isConnected } = useAccount();
   const { connect, connectors } = useConnect();
   const { disconnect } = useDisconnect();
@@ -253,6 +251,13 @@ function AppContent() {
     setTimeout(() => setToonListMsg(''), 4000);
   };
 
+  const scrollToEmailSignup = () => {
+    const emailSection = document.getElementById('email-signup');
+    if (emailSection) {
+      emailSection.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
   const stats = [
     { icon: Users, label: 'News As Entertainment', value: 'Infotainment', color: 'from-brand-primary-400 to-brand-primary-600' },
     { icon: Sparkles, label: 'News As Collectibles', value: 'Ownership', color: 'from-brand-accent-400 to-brand-accent-600' },
@@ -264,14 +269,14 @@ function AppContent() {
   // Show loading or fallback during SSR
   if (!isClient) {
     return (
-      <div className="min-h-screen bg-light-bg dark:bg-dark-bg flex items-center justify-center">
+      <div className="min-h-screen bg-light-bg flex items-center justify-center">
         <div className="text-lg font-bold text-brand-primary-500">Loading ToonLetterz...</div>
       </div>
     );
   }
 
   return (
-    <div className="bg-light-bg dark:bg-dark-bg text-light-text dark:text-dark-text min-h-screen font-sans overflow-x-hidden relative transition-colors duration-300">
+    <div className="bg-light-bg text-light-text min-h-screen font-sans overflow-x-hidden relative transition-colors duration-300">
       <AnimatedBackground />
       <ParticleField />
       
@@ -296,7 +301,7 @@ function AppContent() {
 
       {/* Enhanced mobile-friendly navigation */}
       <motion.nav 
-        className="fixed top-0 w-full z-40 backdrop-blur-2xl bg-light-surface/80 dark:bg-dark-surface/80 border-b border-light-border dark:border-dark-border"
+        className="fixed top-0 w-full z-40 backdrop-blur-2xl bg-light-surface/80 border-b border-light-border"
         initial={{ y: -100 }}
         animate={{ y: 0 }}
         transition={{ duration: 0.6 }}
@@ -323,18 +328,16 @@ function AppContent() {
           <div className="hidden md:flex items-center gap-6">
             <motion.a 
               href="#early-access" 
-              className="text-light-text-secondary dark:text-dark-text-secondary hover:text-brand-secondary-500 transition-all duration-300 relative group font-medium tracking-wide text-sm"
+              className="text-light-text-secondary hover:text-brand-secondary-500 transition-all duration-300 relative group font-medium tracking-wide text-sm"
               whileHover={{ scale: 1.05 }}
             >
               Early Access
               <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-secondary-500 to-brand-accent-500 group-hover:w-full transition-all duration-300" />
             </motion.a>
             
-            <ThemeToggle />
-            
             {isConnected ? (
               <motion.div className="flex items-center gap-3">
-                <div className="text-xs text-brand-primary-500 font-mono bg-light-surface dark:bg-dark-surface px-3 py-1 rounded-full border border-brand-primary-500/20 flex items-center gap-2">
+                <div className="text-xs text-brand-primary-500 font-mono bg-light-surface px-3 py-1 rounded-full border border-brand-primary-500/20 flex items-center gap-2">
                   <span>{address?.slice(0,6)}...{address?.slice(-4)}</span>
                   {nftBalance > 0 && (
                     <span className="bg-brand-primary-500 text-white px-2 py-0.5 rounded-full text-xs font-bold">
@@ -365,16 +368,15 @@ function AppContent() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-3">
-            <ThemeToggle />
             <motion.button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-lg bg-light-surface/50 dark:bg-dark-surface/50 border border-light-border dark:border-dark-border"
+              className="p-2 rounded-lg bg-light-surface/50 border border-light-border"
               whileTap={{ scale: 0.95 }}
             >
               {mobileMenuOpen ? (
-                <X className="w-6 h-6 text-light-text dark:text-dark-text" />
+                <X className="w-6 h-6 text-light-text" />
               ) : (
-                <Menu className="w-6 h-6 text-light-text dark:text-dark-text" />
+                <Menu className="w-6 h-6 text-light-text" />
               )}
             </motion.button>
           </div>
@@ -387,28 +389,28 @@ function AppContent() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: 'auto' }}
               exit={{ opacity: 0, height: 0 }}
-              className="md:hidden border-t border-light-border dark:border-dark-border bg-light-surface/95 dark:bg-dark-surface/95 backdrop-blur-xl"
+              className="md:hidden border-t border-light-border bg-light-surface/95 backdrop-blur-xl"
             >
               <div className="px-4 py-4 space-y-4">
                 <a 
                   href="#preview" 
-                  className="block py-2 text-light-text-secondary dark:text-dark-text-secondary hover:text-brand-primary-500 transition-colors font-medium tracking-wide text-sm"
+                  className="block py-2 text-light-text-secondary hover:text-brand-primary-500 transition-colors font-medium tracking-wide text-sm"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Preview
                 </a>
                 <a 
                   href="#early-access" 
-                  className="block py-2 text-light-text-secondary dark:text-dark-text-secondary hover:text-brand-secondary-500 transition-colors font-medium tracking-wide text-sm"
+                  className="block py-2 text-light-text-secondary hover:text-brand-secondary-500 transition-colors font-medium tracking-wide text-sm"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   Early Access
                 </a>
                 
-                <div className="pt-4 border-t border-light-border dark:border-dark-border">
+                <div className="pt-4 border-t border-light-border">
                   {isConnected ? (
                     <div className="space-y-3">
-                      <div className="text-xs text-brand-primary-500 font-mono bg-light-surface dark:bg-dark-surface px-3 py-2 rounded-lg border border-brand-primary-500/20 flex items-center justify-between">
+                      <div className="text-xs text-brand-primary-500 font-mono bg-light-surface px-3 py-2 rounded-lg border border-brand-primary-500/20 flex items-center justify-between">
                         <span>{address?.slice(0,6)}...{address?.slice(-4)}</span>
                         {nftBalance > 0 && (
                           <span className="bg-brand-primary-500 text-white px-2 py-0.5 rounded-full text-xs font-bold">
@@ -464,20 +466,20 @@ function AppContent() {
           </motion.div>
 
           <ScrollReveal delay={0.3}>
-            <p className="text-sm sm:text-base md:text-lg text-light-text-secondary dark:text-dark-text-secondary leading-relaxed mb-8 sm:mb-12 max-w-4xl mx-auto font-medium px-4 tracking-wide">
+            <p className="text-sm sm:text-base md:text-lg text-light-text-secondary leading-relaxed mb-8 sm:mb-12 max-w-4xl mx-auto font-medium px-4 tracking-wide">
               ToonLetterz turns the long and boring crypto news into animated masterpieces, blending humor and wit. We don't just report the news—we perform it!
             </p>
           </ScrollReveal>
 
           <ScrollReveal delay={0.5}>
-            <div className="flex flex-col gap-4 justify-center items-center max-w-2xl mx-auto mb-12 sm:mb-16 px-4">
+            <div id="email-signup" className="flex flex-col gap-4 justify-center items-center max-w-2xl mx-auto mb-12 sm:mb-16 px-4">
               <div className="relative flex-1 w-full group">
                 <input
                   type="email"
                   placeholder="Reserve your spot — before the drop..."
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl bg-light-surface/50 dark:bg-dark-surface/50 backdrop-blur-xl border border-light-border dark:border-dark-border text-light-text dark:text-dark-text placeholder-light-text-muted dark:placeholder-dark-text-muted focus:ring-2 focus:ring-brand-primary-500 focus:border-brand-primary-500 outline-none transition-all duration-300 group-hover:border-brand-secondary-500/30 font-medium text-sm tracking-wide"
+                  className="w-full px-4 sm:px-6 py-3 sm:py-4 rounded-2xl bg-light-surface/50 backdrop-blur-xl border border-light-border text-light-text placeholder-light-text-muted focus:ring-2 focus:ring-brand-primary-500 focus:border-brand-primary-500 outline-none transition-all duration-300 group-hover:border-brand-secondary-500/30 font-medium text-sm tracking-wide"
                 />
                 <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-brand-primary-500/10 via-brand-secondary-500/10 to-brand-accent-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none" />
                 <div className="absolute -inset-1 rounded-2xl bg-gradient-to-r from-brand-primary-500/20 via-brand-secondary-500/20 to-brand-accent-500/20 blur opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 -z-10" />
@@ -497,7 +499,7 @@ function AppContent() {
                 initial={{ opacity: 0, y: 20, scale: 0.8 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -20, scale: 0.8 }}
-                className="text-brand-primary-500 text-sm sm:text-base font-semibold bg-light-surface/30 dark:bg-dark-surface/30 backdrop-blur-xl px-4 sm:px-6 py-3 rounded-full border border-brand-primary-500/20 inline-block mx-4 tracking-wide"
+                className="text-brand-primary-500 text-sm sm:text-base font-semibold bg-light-surface/30 backdrop-blur-xl px-4 sm:px-6 py-3 rounded-full border border-brand-primary-500/20 inline-block mx-4 tracking-wide"
               >
                 {toonListMsg}
               </motion.p>
@@ -516,10 +518,10 @@ function AppContent() {
                     <div className={`w-10 h-10 sm:w-12 sm:h-12 mx-auto mb-3 sm:mb-4 rounded-xl bg-gradient-to-r ${stat.color} p-2 sm:p-3 shadow-lg group-hover:shadow-xl transition-shadow duration-300`}>
                       <stat.icon className="w-full h-full text-white" />
                     </div>
-                    <div className="text-sm sm:text-lg font-bold text-light-text dark:text-dark-text mb-1 sm:mb-2 bg-gradient-to-r from-light-text to-light-text-secondary dark:from-dark-text dark:to-dark-text-secondary bg-clip-text text-transparent tracking-wide">
+                    <div className="text-sm sm:text-lg font-bold text-light-text mb-1 sm:mb-2 bg-gradient-to-r from-light-text to-light-text-secondary bg-clip-text text-transparent tracking-wide">
                       {stat.value}
                     </div>
-                    <div className="text-xs sm:text-sm text-light-text-muted dark:text-dark-text-muted group-hover:text-light-text-secondary dark:group-hover:text-dark-text-secondary transition-colors duration-300 font-medium tracking-wide">
+                    <div className="text-xs sm:text-sm text-light-text-muted group-hover:text-light-text-secondary transition-colors duration-300 font-medium tracking-wide">
                       {stat.label}
                     </div>
                   </motion.div>
@@ -542,7 +544,7 @@ function AppContent() {
           <div className="grid lg:grid-cols-2 gap-8 sm:gap-16 items-center">
             <ScrollReveal direction="left">
               <HolographicCard className="p-6 sm:p-8">
-                <p className="text-sm sm:text-base text-light-text-secondary dark:text-dark-text-secondary leading-relaxed mb-6 tracking-wide">
+                <p className="text-sm sm:text-base text-light-text-secondary leading-relaxed mb-6 tracking-wide">
                   While you scroll past another dry crypto recap, early adopters are getting smarter—and ahead. Every skipped headline isn't just missed info—it's a missed advantage.
                 </p>
               </HolographicCard>
@@ -557,13 +559,13 @@ function AppContent() {
                 ].map((item, index) => (
                   <motion.div
                     key={index}
-                    className="flex items-center gap-4 p-4 rounded-xl bg-light-surface/30 dark:bg-dark-surface/30 backdrop-blur-xl border border-light-border dark:border-dark-border"
+                    className="flex items-center gap-4 p-4 rounded-xl bg-light-surface/30 backdrop-blur-xl border border-light-border"
                     whileHover={{ scale: 1.02, x: 10 }}
                   >
                     <div className="text-2xl">{item.icon}</div>
                     <div>
-                      <h4 className="font-bold text-light-text dark:text-dark-text tracking-wide text-sm">{item.title}</h4>
-                      <p className="text-xs text-light-text-muted dark:text-dark-text-muted tracking-wide">{item.desc}</p>
+                      <h4 className="font-bold text-light-text tracking-wide text-sm">{item.title}</h4>
+                      <p className="text-xs text-light-text-muted tracking-wide">{item.desc}</p>
                     </div>
                   </motion.div>
                 ))}
@@ -600,10 +602,10 @@ function AppContent() {
                     <div className="w-12 h-12 mx-auto mb-4 rounded-xl bg-gradient-to-r from-brand-primary-500 to-brand-secondary-500 p-3 text-white flex items-center justify-center">
                       {feature.icon}
                     </div>
-                    <h3 className="text-sm sm:text-base font-bold mb-3 text-light-text dark:text-dark-text group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-brand-primary-500 group-hover:to-brand-secondary-500 group-hover:bg-clip-text transition-all duration-300 tracking-wide">
+                    <h3 className="text-sm sm:text-base font-bold mb-3 text-light-text group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:from-brand-primary-500 group-hover:to-brand-secondary-500 group-hover:bg-clip-text transition-all duration-300 tracking-wide">
                       {feature.title}
                     </h3>
-                    <p className="text-xs sm:text-sm text-light-text-muted dark:text-dark-text-muted flex-1 tracking-wide">
+                    <p className="text-xs sm:text-sm text-light-text-muted flex-1 tracking-wide">
                       {feature.desc}
                     </p>
                   </motion.div>
@@ -657,10 +659,10 @@ function AppContent() {
               <div className="space-y-6 sm:space-y-8">
                 <div>
                   <h3 className="text-xl sm:text-2xl md:text-3xl font-black leading-tight mb-4 sm:mb-6 font-display tracking-tight">
-                    <span className="text-light-text dark:text-dark-text">Hack'd for</span>
+                    <span className="text-light-text">Hack'd for</span>
                     <span className="block text-transparent bg-gradient-to-r from-brand-primary-500 to-brand-secondary-500 bg-clip-text mt-2">Pennies</span>
                   </h3>
-                  <p className="text-sm sm:text-base text-light-text-secondary dark:text-dark-text-secondary leading-relaxed mb-4 sm:mb-6 font-medium tracking-wide">
+                  <p className="text-sm sm:text-base text-light-text-secondary leading-relaxed mb-4 sm:mb-6 font-medium tracking-wide">
                     Mint this episode as a collectible NFT on Starknet. Prove you were there before it was cool and join the exclusive collectors club.
                   </p>
                 </div>
@@ -747,9 +749,9 @@ function AppContent() {
                 </div>
 
                 {/* Enhanced minting progress */}
-                <HolographicCard className="bg-light-surface/30 dark:bg-dark-surface/30 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-light-border dark:border-dark-border">
+                <HolographicCard className="bg-light-surface/30 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-light-border">
                   <div className="flex justify-between items-center mb-3">
-                    <span className="text-xs sm:text-sm text-light-text-secondary dark:text-dark-text-secondary flex items-center gap-2 font-medium tracking-wide">
+                    <span className="text-xs sm:text-sm text-light-text-secondary flex items-center gap-2 font-medium tracking-wide">
                       <Coins className="w-4 h-4 text-brand-warning-500" />
                       Minting Progress
                     </span>
@@ -757,7 +759,7 @@ function AppContent() {
                       {totalSupply} / 1000
                     </span>
                   </div>
-                  <div className="w-full bg-light-surface dark:bg-dark-surface rounded-full h-2 sm:h-3 overflow-hidden">
+                  <div className="w-full bg-light-surface rounded-full h-2 sm:h-3 overflow-hidden">
                     <motion.div 
                       className="bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500 h-2 sm:h-3 rounded-full relative"
                       initial={{ width: 0 }}
@@ -767,7 +769,7 @@ function AppContent() {
                       <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent animate-shimmer" />
                     </motion.div>
                   </div>
-                  <p className="text-xs text-light-text-muted dark:text-dark-text-muted mt-2 flex items-center gap-1 font-medium tracking-wide">
+                  <p className="text-xs text-light-text-muted mt-2 flex items-center gap-1 font-medium tracking-wide">
                     <Sparkles className="w-3 h-3 text-brand-warning-500" />
                     {1000 - totalSupply} NFTs remaining!
                   </p>
@@ -813,7 +815,7 @@ function AppContent() {
               <ScrollReveal key={idx} delay={idx * 0.1}>
                 <HolographicCard className="overflow-hidden">
                   <button
-                    className="w-full px-4 sm:px-6 py-4 sm:py-6 text-left flex justify-between items-center text-light-text dark:text-dark-text hover:text-transparent hover:bg-gradient-to-r hover:from-brand-primary-500 hover:to-brand-secondary-500 hover:bg-clip-text transition-all duration-300"
+                    className="w-full px-4 sm:px-6 py-4 sm:py-6 text-left flex justify-between items-center text-light-text hover:text-transparent hover:bg-gradient-to-r hover:from-brand-primary-500 hover:to-brand-secondary-500 hover:bg-clip-text transition-all duration-300"
                     onClick={() => toggleFaq(idx)}
                   >
                     <span className="text-sm sm:text-base font-bold pr-4 tracking-wide">{item.q}</span>
@@ -835,7 +837,7 @@ function AppContent() {
                         transition={{ duration: 0.3 }}
                         className="overflow-hidden"
                       >
-                        <div className="px-4 sm:px-6 pb-4 sm:pb-6 text-xs sm:text-sm text-light-text-secondary dark:text-dark-text-secondary leading-relaxed border-t border-light-border dark:border-dark-border pt-4 font-medium tracking-wide">
+                        <div className="px-4 sm:px-6 pb-4 sm:pb-6 text-xs sm:text-sm text-light-text-secondary leading-relaxed border-t border-light-border pt-4 font-medium tracking-wide">
                           {item.a}
                         </div>
                       </motion.div>
@@ -853,16 +855,16 @@ function AppContent() {
         <div className="max-w-4xl mx-auto text-center">
           <ScrollReveal>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-6 sm:mb-8 bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500 bg-clip-text text-transparent font-display tracking-tight">
-              The Toon Train's Leaving Soon
+              The Toon-Train's Leaving Soon
             </h2>
-            <p className="text-sm sm:text-base text-light-text-secondary dark:text-dark-text-secondary mb-8 sm:mb-12 max-w-3xl mx-auto font-medium tracking-wide">
+            <p className="text-sm sm:text-base text-light-text-secondary mb-8 sm:mb-12 max-w-3xl mx-auto font-medium tracking-wide">
               Join now for first access at launch, behind-the-scenes previews, minting privileges + Stay Toon'd for more!
             </p>
           </ScrollReveal>
 
           <ScrollReveal delay={0.3}>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-              <GlowingButton size="lg" variant="primary" className="w-full sm:w-auto font-semibold tracking-wide">
+              <GlowingButton onClick={scrollToEmailSignup} size="lg" variant="primary" className="w-full sm:w-auto font-semibold tracking-wide">
                 <ArrowRight className="w-5 h-5 mr-2" />
                 Join the ToonList
               </GlowingButton>
@@ -872,7 +874,7 @@ function AppContent() {
       </section>
 
       {/* Enhanced Footer */}
-      <footer className="py-8 sm:py-12 px-4 sm:px-6 border-t border-light-border dark:border-dark-border relative">
+      <footer className="py-8 sm:py-12 px-4 sm:px-6 border-t border-light-border relative">
         <div className="absolute inset-0 bg-gradient-to-r from-brand-primary-500/5 via-brand-secondary-500/5 to-brand-accent-500/5" />
         <div className="max-w-6xl mx-auto relative z-10">
           <div className="text-center">
@@ -891,10 +893,10 @@ function AppContent() {
             >
               ToonLetterz
             </motion.div>
-            <p className="text-xs sm:text-sm text-light-text-muted dark:text-dark-text-muted mb-4 sm:mb-6 font-medium px-4 tracking-wide">
+            <p className="text-xs sm:text-sm text-light-text-muted mb-4 sm:mb-6 font-medium px-4 tracking-wide">
               Stay Toon'd • Powered by <span className="text-brand-primary-500 font-bold">Starknet</span>
             </p>
-            <div className="flex justify-center gap-4 sm:gap-6 text-xs text-light-text-muted dark:text-dark-text-muted">
+            <div className="flex justify-center gap-4 sm:gap-6 text-xs text-light-text-muted">
               <a href="#" className="hover:text-brand-primary-500 transition-colors duration-300 font-medium tracking-wide">Privacy</a>
               <a href="#" className="hover:text-brand-secondary-500 transition-colors duration-300 font-medium tracking-wide">Terms</a>
               <a href="#" className="hover:text-brand-accent-500 transition-colors duration-300 font-medium tracking-wide">Contact</a>
@@ -906,10 +908,4 @@ function AppContent() {
   );
 }
 
-export default function App() {
-  return (
-    <ThemeProvider>
-      <AppContent />
-    </ThemeProvider>
-  );
-}
+export default App;
