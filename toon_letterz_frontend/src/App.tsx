@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAccount, useConnect, useDisconnect, useContract } from '@starknet-react/core';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Play, Zap, ArrowRight, ChevronDown, Star, Eye, Calendar, Users, Sparkles, Trophy, Rocket, Coins, TrendingUp, Flame, Menu, X, Brain, Palette, Lightbulb, MessageCircle, Smile, AlertCircle, CheckCircle } from 'lucide-react';
+import { Play, Zap, ArrowRight, ChevronDown, Star, Eye, Calendar, Users, Sparkles, Trophy, Rocket, Coins, TrendingUp, Flame, Menu, X, Brain, Palette, Lightbulb, MessageCircle, Smile, AlertCircle, CheckCircle, Wallet } from 'lucide-react';
 
 // Components
 import AnimatedBackground from './components/AnimatedBackground';
@@ -14,6 +14,25 @@ import HolographicCard from './components/HolographicCard';
 
 // Contract ABI
 import toonLetterzAbi from './toonLetterzAbi.json';
+
+const faqs = [
+  {
+    q: "What exactly are ToonLetterz?",
+    a: "ToonLetterz are animated crypto news segments that transform complex blockchain stories into entertaining, easy-to-digest cartoons. Each episode is also mintable as an NFT collectible."
+  },
+  {
+    q: "How does the NFT minting work?",
+    a: "When a new episode drops, you can mint it as an NFT on Starknet. Each mint is limited to one per wallet to keep things exclusive."
+  },
+  {
+    q: "What can I do with my ToonLetterz NFTs?",
+    a: "Collect them, trade them, flex them in your wallet, or use them to access exclusive content and perks in our future ecosystem."
+  },
+  {
+    q: "Why Starknet?",
+    a: "Starknet's scalability and low fees make it perfect for minting NFTs without worrying about gas wars or high transaction costs."
+  }
+];
 
 function App() {
   const { address, isConnected } = useAccount();
@@ -52,6 +71,31 @@ function App() {
   const [ownedNfts, setOwnedNfts] = useState<Array<{ id: number; uri: string }>>([]);
   const [isLoadingNfts, setIsLoadingNfts] = useState(false);
   const [totalSupply, setTotalSupply] = useState<number>(0);
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [mintStatus, setMintStatus] = useState<string | null>(null);
+  const [userNFTs, setUserNFTs] = useState<any[]>([]);
+  const [showWalletDropdown, setShowWalletDropdown] = useState(false);
+
+  const handleMint = async () => {
+    if (!isConnected || !address) {
+      setMintStatus("Please connect your wallet first!");
+      return;
+    }
+
+    setIsMinting(true);
+    setMintStatus("Minting in progress...");
+
+    try {
+      // Simulate minting process
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      setMintStatus("Mint successful!");
+      setUserNFTs(prev => [...prev, { id: Date.now() }]);
+    } catch (error) {
+      setMintStatus("Minting failed. Please try again.");
+    } finally {
+      setIsMinting(false);
+    }
+  };
 
   const mintEpisode = async () => {
     if (!contract || !address) {
@@ -254,7 +298,13 @@ function App() {
   const scrollToEmailSignup = () => {
     const emailSection = document.getElementById('email-signup');
     if (emailSection) {
-      emailSection.scrollIntoView({ behavior: 'smooth' });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      setTimeout(() => {
+        emailSection.classList.add('ring-4', 'ring-brand-primary-500/50', 'animate-pulse');
+        setTimeout(() => {
+          emailSection.classList.remove('ring-4', 'ring-brand-primary-500/50', 'animate-pulse');
+        }, 2000);
+      }, 800);
     }
   };
 
@@ -263,7 +313,6 @@ function App() {
     { icon: Sparkles, label: 'News As Collectibles', value: 'Ownership', color: 'from-brand-accent-400 to-brand-accent-600' },
     { icon: Trophy, label: 'One Mint Per Wallet', value: 'Exclusive', color: 'from-brand-secondary-400 to-brand-secondary-600' },
     { icon: Rocket, label: 'The New Interface', value: 'Humor', color: 'from-brand-warning-400 to-brand-secondary-600' },
-    //{ icon: Rocket, label: 'Your NFTs', value: nftBalance.toString(), color: 'from-brand-warning-400 to-brand-warning-600' }
   ];
 
   // Show loading or fallback during SSR
@@ -326,16 +375,7 @@ function App() {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
-            <motion.a 
-              href="#early-access" 
-              className="text-light-text-secondary hover:text-brand-secondary-500 transition-all duration-300 relative group font-medium tracking-wide text-sm"
-              whileHover={{ scale: 1.05 }}
-            >
-              Early Access
-              <div className="absolute -bottom-1 left-0 w-0 h-0.5 bg-gradient-to-r from-brand-secondary-500 to-brand-accent-500 group-hover:w-full transition-all duration-300" />
-            </motion.a>
-            
-            {isConnected ? (
+            {isConnected && (
               <motion.div className="flex items-center gap-3">
                 <div className="text-xs text-brand-primary-500 font-mono bg-light-surface px-3 py-1 rounded-full border border-brand-primary-500/20 flex items-center gap-2">
                   <span>{address?.slice(0,6)}...{address?.slice(-4)}</span>
@@ -349,20 +389,6 @@ function App() {
                   Disconnect
                 </GlowingButton>
               </motion.div>
-            ) : (
-              <div className="flex gap-2">
-                {connectors.map((connector) => (
-                  <GlowingButton 
-                    key={connector.id} 
-                    onClick={() => connect({ connector })}
-                    variant="primary" 
-                    size="sm"
-                  >
-                    <Zap className="w-4 h-4 mr-2" />
-                    {connector.name}
-                  </GlowingButton>
-                ))}
-              </div>
             )}
           </div>
 
@@ -399,13 +425,6 @@ function App() {
                 >
                   Preview
                 </a>
-                <a 
-                  href="#early-access" 
-                  className="block py-2 text-light-text-secondary hover:text-brand-secondary-500 transition-colors font-medium tracking-wide text-sm"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Early Access
-                </a>
                 
                 <div className="pt-4 border-t border-light-border">
                   {isConnected ? (
@@ -424,18 +443,34 @@ function App() {
                     </div>
                   ) : (
                     <div className="space-y-2">
-                      {connectors.map((connector) => (
+                      <div className="relative">
                         <GlowingButton 
-                          key={connector.id} 
-                          onClick={() => { connect({ connector }); setMobileMenuOpen(false); }}
+                          onClick={() => setShowWalletDropdown(!showWalletDropdown)}
                           variant="primary" 
                           size="sm"
-                          className="w-full"
+                          className="w-full flex items-center justify-center gap-1"
                         >
-                          <Zap className="w-4 h-4 mr-2" />
-                          {connector.name}
+                          <Zap className="w-4 h-4" />
+                          Connect Wallet
+                          <ChevronDown className="w-4 h-4 ml-1" />
                         </GlowingButton>
-                      ))}
+                        
+                        {showWalletDropdown && (
+                          <div className="mt-2 bg-light-surface/95 backdrop-blur-xl rounded-xl shadow-lg ring-1 ring-light-border">
+                            <div className="py-1">
+                              {connectors.map((connector) => (
+                                <button
+                                  key={connector.id}
+                                  onClick={() => { connect({ connector }); setMobileMenuOpen(false); }}
+                                  className="block w-full text-left px-4 py-2 text-sm text-light-text hover:bg-light-surface/50 transition-colors duration-200"
+                                >
+                                  {connector.name}
+                                </button>
+                              ))}
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
@@ -616,36 +651,38 @@ function App() {
         </div>
       </section>
       
-       {/* Preview Section with Minting */}
+      {/* Preview Section with Minting */}
       <section id="preview" className="py-16 sm:py-20 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal>
-            <h2 className="text-xl sm:text-3xl md:text-4xl font-black text-center mb-12 sm:mb-16 bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500 bg-clip-text text-transparent font-display tracking-tight">
-              🎬 Mint Your First ToonLetterz NFT
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-center mb-12 sm:mb-16 bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500 bg-clip-text text-transparent font-display tracking-tight">
+              See It. Get It. Own It.
             </h2>
           </ScrollReveal>
 
-          <div className="grid lg:grid-cols-2 gap-8 sm:gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center">
+            {/* Preview Video/Image */}
             <ScrollReveal direction="left">
-              <HolographicCard className="relative overflow-hidden group">
+              <HolographicCard className="group">
                 <div className="aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-brand-primary-500/20 via-brand-secondary-500/20 to-brand-accent-500/20 relative">
                   <img 
-                    src="/toonletterz_demo_.png?auto=compress&cs=tinysrgb&w=800"
+                    src="/toonletterz_demo_.png"
                     alt="ToonLetterz Preview"
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
                   
-                  <motion.div 
-                    className="absolute inset-0 flex items-center justify-center"
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-brand-primary-500/20 via-brand-secondary-500/20 to-brand-accent-500/20 backdrop-blur-sm rounded-full flex items-center justify-center cursor-pointer border border-white/20 group-hover:border-brand-primary-500/50 transition-all duration-300">
-                      <Play className="w-6 h-6 sm:w-8 sm:h-8 text-white ml-1 drop-shadow-lg" />
-                    </div>
-                  </motion.div>
-                  
+                  {/* Play button overlay */}
+                  <div className="absolute inset-0 flex items-center justify-center">
+                    <motion.button
+                      whileHover={{ scale: 1.1 }}
+                      whileTap={{ scale: 0.95 }}
+                      className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-white hover:bg-white/30 transition-all duration-300 shadow-2xl"
+                    >
+                      <Play className="w-6 h-6 sm:w-8 sm:h-8 ml-1" />
+                    </motion.button>
+                  </div>
+
+                  {/* Sample episode label */}
                   <div className="absolute bottom-3 sm:bottom-4 left-3 sm:left-4 right-3 sm:right-4">
                     <div className="bg-black/30 backdrop-blur-sm rounded-lg px-2 sm:px-3 py-2 text-white">
                       <p className="text-xs font-medium tracking-wide">Sample: "Lido Hack'd for Pennies"</p>
@@ -655,194 +692,185 @@ function App() {
               </HolographicCard>
             </ScrollReveal>
 
+            {/* Minting Interface */}
             <ScrollReveal direction="right">
               <div className="space-y-6 sm:space-y-8">
                 <div>
-                  <h3 className="text-xl sm:text-2xl md:text-3xl font-black leading-tight mb-4 sm:mb-6 font-display tracking-tight">
-                    <span className="text-light-text">Hack'd for</span>
-                    <span className="block text-transparent bg-gradient-to-r from-brand-primary-500 to-brand-secondary-500 bg-clip-text mt-2">Pennies</span>
+                  <h3 className="text-lg sm:text-xl font-bold mb-4 text-light-text tracking-wide">
+                    Mint This Episode as NFT
                   </h3>
-                  <p className="text-sm sm:text-base text-light-text-secondary leading-relaxed mb-4 sm:mb-6 font-medium tracking-wide">
-                    Mint this episode as a collectible NFT on Starknet. Prove you were there before it was cool and join the exclusive collectors club.
+                  <p className="text-sm text-light-text-secondary mb-6 tracking-wide">
+                    Own a piece of crypto history. Each ToonLetterz episode can be minted as a unique collectible on Starknet.
                   </p>
                 </div>
 
-                {/* Mint/Error/Success Messages */}
-                <AnimatePresence>
-                  {mintError && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="bg-brand-error-500/10 border border-brand-error-500/30 rounded-xl p-4 flex items-start gap-3"
-                    >
-                      <AlertCircle className="w-5 h-5 text-brand-error-500 mt-0.5 flex-shrink-0" />
-                      <p className="text-brand-error-500 font-medium tracking-wide text-sm">{mintError}</p>
-                    </motion.div>
-                  )}
-                  
-                  {mintSuccess && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className="bg-brand-success-500/10 border border-brand-success-500/30 rounded-xl p-4 flex items-start gap-3"
-                    >
-                      <CheckCircle className="w-5 h-5 text-brand-success-500 mt-0.5 flex-shrink-0" />
-                      <p className="text-brand-success-500 font-medium tracking-wide text-sm">
-                        🎉 Minting successful! Your ToonLetterz NFT is being processed. Check your wallet soon!
-                      </p>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-
-                <div className="flex flex-col sm:flex-row flex-wrap gap-3 sm:gap-4">
-                  {isConnected ? (
-                    <GlowingButton 
-                      onClick={mintEpisode} 
-                      size="lg" 
-                      variant="primary" 
-                      className="w-full sm:w-auto font-semibold tracking-wide"
-                      disabled={isMinting || nftBalance > 0}
-                    >
-                      {isMinting ? (
-                        <div className="flex items-center">
-                          <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                          </svg>
-                          Minting...
+                {/* Wallet Connection & Minting */}
+                <HolographicCard>
+                  <div className="space-y-4">
+                    {!isConnected ? (
+                      <div className="text-center">
+                        <p className="text-sm text-light-text-muted mb-4 tracking-wide">
+                          Connect your Starknet wallet to mint
+                        </p>
+                        <div className="relative group">
+                          <GlowingButton 
+                            onClick={() => setShowWalletDropdown(!showWalletDropdown)}
+                            size="lg"
+                            variant="primary"
+                            className="w-full flex items-center justify-center"
+                          >
+                            <Wallet className="w-5 h-5 mr-2" />
+                            Connect Wallet
+                            <ChevronDown className="w-5 h-5 ml-2 transition-transform duration-200" />
+                          </GlowingButton>
+                          
+                          {showWalletDropdown && (
+                            <div className="absolute top-full left-0 right-0 mt-2 bg-light-surface/95 backdrop-blur-xl rounded-xl shadow-lg ring-1 ring-light-border z-50">
+                              <div className="py-1">
+                                {connectors.map((connector) => (
+                                  <button
+                                    key={connector.id}
+                                    onClick={() => connect({ connector })}
+                                    className="block w-full text-left px-4 py-3 text-sm text-light-text hover:bg-light-surface/50 transition-colors duration-200 flex items-center gap-2"
+                                  >
+                                    {connector.name === 'Argent' && (
+                                      <img src="https://www.argent.xyz/favicon.ico" alt="Argent" className="w-4 h-4" />
+                                    )}
+                                    {connector.name === 'Braavos' && (
+                                      <img src="https://braavos.app/favicon.ico" alt="Braavos" className="w-4 h-4" />
+                                    )}
+                                    {connector.name}
+                                  </button>
+                                ))}
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      ) : nftBalance > 0 ? (
-                        <>
-                          <CheckCircle className="w-5 h-5 mr-2" />
-                          Already Minted!
-                        </>
-                      ) : (
-                        <>
-                          <Rocket className="w-5 h-5 mr-2" />
-                          Mint Now - Free
-                        </>
-                      )}
-                    </GlowingButton>
-                  ) : (
-                    <div className="flex flex-col sm:flex-row flex-wrap gap-2">
-                      {connectors.map((connector) => (
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        <div className="flex items-center justify-between p-3 bg-light-surface/50 rounded-lg">
+                          <span className="text-sm text-light-text-secondary tracking-wide">
+                            Connected: {address?.slice(0, 6)}...{address?.slice(-4)}
+                          </span>
+                          <span className="text-sm font-semibold text-brand-primary-500 tracking-wide">
+                            {nftBalance} NFTs owned
+                          </span>
+                        </div>
+                        
                         <GlowingButton 
-                          key={connector.id} 
-                          onClick={() => connect({ connector })}
-                          variant="outline"
+                          onClick={mintEpisode}
                           size="lg"
-                          className="w-full sm:w-auto font-semibold tracking-wide"
+                          variant="primary"
+                          className="w-full"
+                          disabled={isMinting}
                         >
-                          <Zap className="w-5 h-5 mr-2" />
-                          Connect {connector.name}
+                          {isMinting ? (
+                            <>
+                              <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                              </svg>
+                              Minting...
+                            </>
+                          ) : (
+                            <>
+                              <Coins className="w-5 h-5 mr-2" />
+                              Mint Episode NFT
+                            </>
+                          )}
                         </GlowingButton>
-                      ))}
-                    </div>
-                  )}
-                  
-                  <GlowingButton variant="outline" size="lg" className="w-full sm:w-auto font-semibold tracking-wide">
-                    <Play className="w-5 h-5 mr-2" />
-                    Watch Preview
-                  </GlowingButton>
-                </div>
-
-                {/* Enhanced minting progress */}
-                <HolographicCard className="bg-light-surface/30 backdrop-blur-xl rounded-2xl p-4 sm:p-6 border border-light-border">
-                  <div className="flex justify-between items-center mb-3">
-                    <span className="text-xs sm:text-sm text-light-text-secondary flex items-center gap-2 font-medium tracking-wide">
-                      <Coins className="w-4 h-4 text-brand-warning-500" />
-                      Minting Progress
-                    </span>
-                    <span className="text-xs sm:text-sm text-brand-primary-500 font-bold tracking-wide">
-                      {totalSupply} / 1000
-                    </span>
+                        
+                        {mintError && (
+                          <div className="text-sm text-center text-red-500 font-medium tracking-wide p-3 bg-red-500/10 rounded-lg">
+                            {mintError}
+                          </div>
+                        )}
+                        
+                        {mintSuccess && (
+                          <div className="text-sm text-center text-green-500 font-medium tracking-wide p-3 bg-green-500/10 rounded-lg">
+                            Mint successful! Check your wallet.
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  <div className="w-full bg-light-surface rounded-full h-2 sm:h-3 overflow-hidden">
-                    <motion.div 
-                      className="bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500 h-2 sm:h-3 rounded-full relative"
-                      initial={{ width: 0 }}
-                      animate={{ width: `${(totalSupply / 1000) * 100}%` }}
-                      transition={{ duration: 2, delay: 1 }}
-                    >
-                      <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-transparent animate-shimmer" />
-                    </motion.div>
-                  </div>
-                  <p className="text-xs text-light-text-muted mt-2 flex items-center gap-1 font-medium tracking-wide">
-                    <Sparkles className="w-3 h-3 text-brand-warning-500" />
-                    {1000 - totalSupply} NFTs remaining!
-                  </p>
                 </HolographicCard>
+
+                {/* Benefits */}
+                <div className="space-y-3">
+                  {[
+                    'Own the moment crypto history was made',
+                    'Exclusive holder benefits and perks',
+                    'Trade and collect rare episodes',
+                    'Support independent crypto journalism'
+                  ].map((benefit, index) => (
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: 20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1 }}
+                      className="flex items-center gap-3"
+                    >
+                      <CheckCircle className="w-5 h-5 text-brand-success-500 flex-shrink-0" />
+                      <span className="text-sm text-light-text-secondary tracking-wide">
+                        {benefit}
+                      </span>
+                    </motion.div>
+                  ))}
+                </div>
               </div>
             </ScrollReveal>
           </div>
         </div>
       </section>
 
-      {/* FAQ Section with updated copy */}
-      <section className="py-16 sm:py-20 px-4 sm:px-6">
+      {/* FAQ Section */}
+      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-br from-brand-primary-500/5 via-brand-secondary-500/5 to-brand-accent-500/5">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
-            <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-center mb-12 sm:mb-16 bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500 bg-clip-text text-transparent font-display tracking-tight">
-              🙋‍♂️ Frequently Asked Questions
-            </h3>
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-black text-center mb-12 sm:mb-16 bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500 bg-clip-text text-transparent font-display tracking-tight">
+              Questions? We've Got Answers.
+            </h2>
           </ScrollReveal>
 
-          <div className="space-y-3 sm:space-y-4">
-            {[
-              { 
-                q: "What is ToonLetterz?", 
-                a: "ToonLetterz is the animated infotainment drop that transforms the fast-moving, often absurd world of crypto into bite-sized, humorous animations." 
-              },
-              { 
-                q: "How often do new Toonz drop?", 
-                a: "Every week, like clockwork." 
-              },
-              { 
-                q: "What makes ToonLetterz different?", 
-                a: "We are redefining how news is told, using humor and animation to transform boring blocks of text into collectibles." 
-              },
-              { 
-                q: "Can I mint more than one?", 
-                a: "Nope. One mint per wallet. Keeps it rare, keeps it real." 
-              },
-              { 
-                q: "When's the launch?", 
-                a: "Soon. ToonList gets Toon'd in first." 
-              }
-            ].map((item, idx) => (
-              <ScrollReveal key={idx} delay={idx * 0.1}>
-                <HolographicCard className="overflow-hidden">
-                  <button
-                    className="w-full px-4 sm:px-6 py-4 sm:py-6 text-left flex justify-between items-center text-light-text hover:text-transparent hover:bg-gradient-to-r hover:from-brand-primary-500 hover:to-brand-secondary-500 hover:bg-clip-text transition-all duration-300"
-                    onClick={() => toggleFaq(idx)}
+          <div className="space-y-4">
+            {faqs.map((faq, index) => (
+              <ScrollReveal key={index} delay={index * 0.1}>
+                <HolographicCard>
+                  <motion.button
+                    onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                    className="w-full text-left p-4 sm:p-6 focus:outline-none"
+                    whileHover={{ scale: 1.01 }}
                   >
-                    <span className="text-sm sm:text-base font-bold pr-4 tracking-wide">{item.q}</span>
-                    <motion.div
-                      animate={{ rotate: faqOpen === idx ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="text-brand-primary-500 flex-shrink-0"
-                    >
-                      <ChevronDown className="w-5 h-5 sm:w-6 sm:h-6" />
-                    </motion.div>
-                  </button>
-                  
-                  <AnimatePresence>
-                    {faqOpen === idx && (
+                    <div className="flex justify-between items-center">
+                      <h3 className="text-sm sm:text-base font-bold text-light-text pr-4 tracking-wide">
+                        {faq.q}
+                      </h3>
                       <motion.div
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
+                        animate={{ rotate: openFaq === index ? 180 : 0 }}
                         transition={{ duration: 0.3 }}
-                        className="overflow-hidden"
                       >
-                        <div className="px-4 sm:px-6 pb-4 sm:pb-6 text-xs sm:text-sm text-light-text-secondary leading-relaxed border-t border-light-border pt-4 font-medium tracking-wide">
-                          {item.a}
-                        </div>
+                        <ChevronDown className="w-5 h-5 text-brand-primary-500 flex-shrink-0" />
                       </motion.div>
-                    )}
-                  </AnimatePresence>
+                    </div>
+                    
+                    <AnimatePresence>
+                      {openFaq === index && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: 'auto' }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.3 }}
+                          className="overflow-hidden"
+                        >
+                          <p className="text-xs sm:text-sm text-light-text-secondary mt-4 tracking-wide">
+                            {faq.a}
+                          </p>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </motion.button>
                 </HolographicCard>
               </ScrollReveal>
             ))}
@@ -855,7 +883,7 @@ function App() {
         <div className="max-w-4xl mx-auto text-center">
           <ScrollReveal>
             <h2 className="text-xl sm:text-2xl md:text-3xl font-black mb-6 sm:mb-8 bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500 bg-clip-text text-transparent font-display tracking-tight">
-              The Toon-Train's Leaving Soon
+              The Toon Train's Leaving Soon
             </h2>
             <p className="text-sm sm:text-base text-light-text-secondary mb-8 sm:mb-12 max-w-3xl mx-auto font-medium tracking-wide">
               Join now for first access at launch, behind-the-scenes previews, minting privileges + Stay Toon'd for more!
@@ -864,7 +892,12 @@ function App() {
 
           <ScrollReveal delay={0.3}>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
-              <GlowingButton onClick={scrollToEmailSignup} size="lg" variant="primary" className="w-full sm:w-auto font-semibold tracking-wide">
+              <GlowingButton 
+                onClick={scrollToEmailSignup}
+                size="lg" 
+                variant="primary" 
+                className="w-full sm:w-auto font-semibold tracking-wide"
+              >
                 <ArrowRight className="w-5 h-5 mr-2" />
                 Join the ToonList
               </GlowingButton>
