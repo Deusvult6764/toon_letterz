@@ -76,6 +76,16 @@ function App() {
   const [userNFTs, setUserNFTs] = useState<any[]>([]);
   const [showWalletDropdown, setShowWalletDropdown] = useState(false);
 
+  const toggleWalletDropdown = () => {
+    setShowWalletDropdown(!showWalletDropdown);
+  };
+
+  const handleConnect = (connector: any) => {
+    connect({ connector });
+    setShowWalletDropdown(false);
+    setMobileMenuOpen(false);
+  };
+
   const handleMint = async () => {
     if (!isConnected || !address) {
       setMintStatus("Please connect your wallet first!");
@@ -375,7 +385,50 @@ function App() {
           
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-6">
-            {isConnected && (
+            {!isConnected ? (
+              <div className="relative">
+                <GlowingButton 
+                  onClick={toggleWalletDropdown}
+                  variant="primary" 
+                  size="sm"
+                  className="flex items-center gap-1"
+                >
+                  <Zap className="w-4 h-4" />
+                  Connect Wallet
+                  <ChevronDown className={`w-4 h-4 ml-1 transition-transform ${showWalletDropdown ? 'rotate-180' : ''}`} />
+                </GlowingButton>
+                
+                <AnimatePresence>
+                  {showWalletDropdown && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute top-full right-0 mt-2 bg-light-surface/95 backdrop-blur-xl rounded-xl shadow-lg ring-1 ring-light-border z-50"
+                    >
+                      <div className="py-1">
+                        {connectors.map((connector) => (
+                          <button
+                            key={connector.id}
+                            onClick={() => handleConnect(connector)}
+                            className="block w-full text-left px-4 py-2 text-sm text-light-text hover:bg-light-surface/50 transition-colors duration-200 flex items-center gap-2"
+                          >
+                            {connector.name === 'Argent' && (
+                              <img src="https://www.argent.xyz/favicon.ico" alt="Argent" className="w-4 h-4" />
+                            )}
+                            {connector.name === 'Braavos' && (
+                              <img src="https://braavos.app/favicon.ico" alt="Braavos" className="w-4 h-4" />
+                            )}
+                            {connector.name}
+                          </button>
+                        ))}
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
+            ) : (
               <motion.div className="flex items-center gap-3">
                 <div className="text-xs text-brand-primary-500 font-mono bg-light-surface px-3 py-1 rounded-full border border-brand-primary-500/20 flex items-center gap-2">
                   <span>{address?.slice(0,6)}...{address?.slice(-4)}</span>
@@ -445,31 +498,44 @@ function App() {
                     <div className="space-y-2">
                       <div className="relative">
                         <GlowingButton 
-                          onClick={() => setShowWalletDropdown(!showWalletDropdown)}
+                          onClick={toggleWalletDropdown}
                           variant="primary" 
                           size="sm"
                           className="w-full flex items-center justify-center gap-1"
                         >
                           <Zap className="w-4 h-4" />
                           Connect Wallet
-                          <ChevronDown className="w-4 h-4 ml-1" />
+                          <ChevronDown className={`w-4 h-4 ml-1 transition-transform ${showWalletDropdown ? 'rotate-180' : ''}`} />
                         </GlowingButton>
                         
-                        {showWalletDropdown && (
-                          <div className="mt-2 bg-light-surface/95 backdrop-blur-xl rounded-xl shadow-lg ring-1 ring-light-border">
-                            <div className="py-1">
-                              {connectors.map((connector) => (
-                                <button
-                                  key={connector.id}
-                                  onClick={() => { connect({ connector }); setMobileMenuOpen(false); }}
-                                  className="block w-full text-left px-4 py-2 text-sm text-light-text hover:bg-light-surface/50 transition-colors duration-200"
-                                >
-                                  {connector.name}
-                                </button>
-                              ))}
-                            </div>
-                          </div>
-                        )}
+                        <AnimatePresence>
+                          {showWalletDropdown && (
+                            <motion.div
+                              initial={{ opacity: 0, y: 10 }}
+                              animate={{ opacity: 1, y: 0 }}
+                              exit={{ opacity: 0, y: 10 }}
+                              className="mt-2 bg-light-surface/95 backdrop-blur-xl rounded-xl shadow-lg ring-1 ring-light-border z-50"
+                            >
+                              <div className="py-1">
+                                {connectors.map((connector) => (
+                                  <button
+                                    key={connector.id}
+                                    onClick={() => handleConnect(connector)}
+                                    className="block w-full text-left px-4 py-2 text-sm text-light-text hover:bg-light-surface/50 transition-colors duration-200 flex items-center gap-2"
+                                  >
+                                    {connector.name === 'Argent' && (
+                                      <img src="https://www.argent.xyz/favicon.ico" alt="Argent" className="w-4 h-4" />
+                                    )}
+                                    {connector.name === 'Braavos' && (
+                                      <img src="https://braavos.app/favicon.ico" alt="Braavos" className="w-4 h-4" />
+                                    )}
+                                    {connector.name}
+                                  </button>
+                                ))}
+                              </div>
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     </div>
                   )}
@@ -480,7 +546,7 @@ function App() {
         </AnimatePresence>
       </motion.nav>
 
-      {/* Hero Section with new copy */}
+      {/* Hero Section */}
       <section className="relative pt-24 sm:pt-32 pb-16 sm:pb-20 px-4 sm:px-6 text-center overflow-hidden">
         <div className="max-w-6xl mx-auto relative z-10">
           <motion.div
@@ -494,7 +560,6 @@ function App() {
               className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl font-black bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 via-brand-accent-500 to-brand-warning-500 bg-clip-text text-transparent drop-shadow-2xl font-display leading-tight tracking-tight"
               stagger={0.08}
             />
-            {/* Glowing text shadow effect */}
             <div className="absolute inset-0 text-2xl sm:text-4xl md:text-6xl lg:text-6xl font-black text-brand-primary-500/20 blur-2xl -z-10 tracking-tight">
               Crypto News You Can Enjoy, Share, and Collect!
             </div>
@@ -714,37 +779,44 @@ function App() {
                         </p>
                         <div className="relative group">
                           <GlowingButton 
-                            onClick={() => setShowWalletDropdown(!showWalletDropdown)}
+                            onClick={toggleWalletDropdown}
                             size="lg"
                             variant="primary"
                             className="w-full flex items-center justify-center"
                           >
                             <Wallet className="w-5 h-5 mr-2" />
                             Connect Wallet
-                            <ChevronDown className="w-5 h-5 ml-2 transition-transform duration-200" />
+                            <ChevronDown className={`w-5 h-5 ml-2 transition-transform ${showWalletDropdown ? 'rotate-180' : ''}`} />
                           </GlowingButton>
                           
-                          {showWalletDropdown && (
-                            <div className="absolute top-full left-0 right-0 mt-2 bg-light-surface/95 backdrop-blur-xl rounded-xl shadow-lg ring-1 ring-light-border z-50">
-                              <div className="py-1">
-                                {connectors.map((connector) => (
-                                  <button
-                                    key={connector.id}
-                                    onClick={() => connect({ connector })}
-                                    className="block w-full text-left px-4 py-3 text-sm text-light-text hover:bg-light-surface/50 transition-colors duration-200 flex items-center gap-2"
-                                  >
-                                    {connector.name === 'Argent' && (
-                                      <img src="https://www.argent.xyz/favicon.ico" alt="Argent" className="w-4 h-4" />
-                                    )}
-                                    {connector.name === 'Braavos' && (
-                                      <img src="https://braavos.app/favicon.ico" alt="Braavos" className="w-4 h-4" />
-                                    )}
-                                    {connector.name}
-                                  </button>
-                                ))}
-                              </div>
-                            </div>
-                          )}
+                          <AnimatePresence>
+                            {showWalletDropdown && (
+                              <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                exit={{ opacity: 0, y: 10 }}
+                                className="absolute top-full left-0 right-0 mt-2 bg-light-surface/95 backdrop-blur-xl rounded-xl shadow-lg ring-1 ring-light-border z-50"
+                              >
+                                <div className="py-1">
+                                  {connectors.map((connector) => (
+                                    <button
+                                      key={connector.id}
+                                      onClick={() => handleConnect(connector)}
+                                      className="block w-full text-left px-4 py-3 text-sm text-light-text hover:bg-light-surface/50 transition-colors duration-200 flex items-center gap-2"
+                                    >
+                                      {connector.name === 'Argent' && (
+                                        <img src="https://www.argent.xyz/favicon.ico" alt="Argent" className="w-4 h-4" />
+                                      )}
+                                      {connector.name === 'Braavos' && (
+                                        <img src="https://braavos.app/favicon.ico" alt="Braavos" className="w-4 h-4" />
+                                      )}
+                                      {connector.name}
+                                    </button>
+                                  ))}
+                                </div>
+                              </motion.div>
+                            )}
+                          </AnimatePresence>
                         </div>
                       </div>
                     ) : (
