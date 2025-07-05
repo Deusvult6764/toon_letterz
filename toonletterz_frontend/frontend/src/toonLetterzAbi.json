@@ -1,0 +1,110 @@
+[
+  {
+    "name": "mint_item",
+    "type": "function",
+    "inputs": [],
+    "outputs": [],
+    "state_mutability": "external"
+  },
+  {
+    "name": "balanceOf",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "felt"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "felt"
+      }
+    ],
+    "state_mutability": "view"
+  },
+  {
+    "name": "tokenOfOwnerByIndex",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "owner",
+        "type": "felt"
+      },
+      {
+        "name": "index",
+        "type": "felt"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "felt"
+      }
+    ],
+    "state_mutability": "view"
+  },
+  {
+    "name": "get_token_uri",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "token_id",
+        "type": "felt"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "felt"
+      }
+    ],
+    "state_mutability": "view"
+  },
+  {
+    "name": "ownerOf",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "token_id",
+        "type": "felt"
+      }
+    ],
+    "outputs": [
+      {
+        "type": "felt"
+      }
+    ],
+    "state_mutability": "view"
+  },
+  {
+    "name": "totalSupply",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "felt"
+      }
+    ],
+    "state_mutability": "view"
+  },
+  {
+    "name": "name",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "felt"
+      }
+    ],
+    "state_mutability": "view"
+  },
+  {
+    "name": "symbol",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "type": "felt"
+      }
+    ],
+    "state_mutability": "view"
+  }
+]
