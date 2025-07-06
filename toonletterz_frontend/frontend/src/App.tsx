@@ -743,6 +743,7 @@ function App() {
       </section>
 
       {/* Trust Signals Section */}
+      {/*
       <section className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-br from-brand-primary-500/5 via-brand-secondary-500/5 to-brand-accent-500/5">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
@@ -756,6 +757,7 @@ function App() {
           </ScrollReveal>
         </div>
       </section>
+      */}
 
       {/* Value Proposition Section */}
       <section className="py-20 sm:py-24 px-4 sm:px-6">
@@ -1017,7 +1019,7 @@ function App() {
                 className="font-black tracking-wide text-xl px-12 py-6"
               >
                 <Rocket className="w-6 h-6 mr-3" />
-                Join ToonList 
+                Join the ToonList 
               </GlowingButton>
             </motion.div>
           </ScrollReveal>

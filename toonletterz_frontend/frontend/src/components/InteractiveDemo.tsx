@@ -29,8 +29,8 @@ const InteractiveDemo: React.FC = () => {
       <div className="aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-brand-primary-500/20 via-brand-secondary-500/20 to-brand-accent-500/20 relative">
         {/* Demo Image */}
         <img 
-          src="https://images.pexels.com/photos/730547/pexels-photo-730547.jpeg?auto=compress&cs=tinysrgb&w=800"
-          alt="ToonLetterz Demo"
+          src="/toonletterz_demo_.png"
+          alt="ToonLetterz Demo - Lido Hack Episode"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         
