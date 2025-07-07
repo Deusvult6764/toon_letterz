@@ -58,6 +58,8 @@ import toonLetterzAbi from './toonLetterzAbi.json';
 // Contract address (replace with actual deployed contract address)
 const CONTRACT_ADDRESS = "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
 
+const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDTmfukPNgegiKFcyvotbhItrR-heiiPq-YkjNSWu5XCRbCL5d9UdJGg58hNWVvCk0JA/exec';
+
 // Enhanced Wallet Dropdown Component with Loading States
 const WalletDropdown: React.FC<{
   isOpen: boolean;
