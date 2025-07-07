@@ -1,32 +1,32 @@
-use starknet::ContractAddress;
 
 #[starknet::interface]
-pub trait IToonLetterz<T> {
-    fn get_token_uri(self: @T, token_id: u256) -> ByteArray;
-    fn set_token_uri(ref self: T, token_id: u256, uri: ByteArray); 
-    fn mint_item(ref self: T, recipient: ContractAddress, uri: ByteArray);
+pub trait IToonLetterz<TContractState> {
+    fn get_token_uri(self: @TContractState, token_id: u256) -> ByteArray;
+    fn set_token_uri(ref self: TContractState, uri: ByteArray);
+    fn mint_item(ref self: TContractState);
 }
 
 #[starknet::contract]
 mod tlz {
     use openzeppelin::introspection::src5::SRC5Component;
     use openzeppelin::token::erc721::ERC721Component;
-    use starknet::ContractAddress;
     use openzeppelin::token::erc721::extensions::ERC721EnumerableComponent;
     use starknet::storage::{StoragePointerReadAccess, StoragePointerWriteAccess};
     use starknet::storage::{Map, StorageMapReadAccess, StorageMapWriteAccess};
+    use starknet::ContractAddress;
+    use starknet::get_caller_address;
 
     component!(path: ERC721Component, storage: erc721, event: ERC721Event);
     component!(path: SRC5Component, storage: src5, event: SRC5Event);
     component!(path: ERC721EnumerableComponent, storage: erc721_enumerable, event: ERC721EnumerableEvent);
 
-    // External
+    // Add required implementations
     #[abi(embed_v0)]
     impl ERC721MixinImpl = ERC721Component::ERC721MixinImpl<ContractState>;
     #[abi(embed_v0)]
     impl ERC721EnumerableImpl = ERC721EnumerableComponent::ERC721EnumerableImpl<ContractState>;
 
-    // Internal
+    // Internal implementations
     impl ERC721InternalImpl = ERC721Component::InternalImpl<ContractState>;
     impl ERC721EnumerableInternalImpl = ERC721EnumerableComponent::InternalImpl<ContractState>;
 
@@ -39,7 +39,11 @@ mod tlz {
         #[substorage(v0)]
         erc721_enumerable: ERC721EnumerableComponent::Storage,
         pub counter: u256,
+        pub default_uri: ByteArray,
+        pub owner: ContractAddress,
+        pub has_minted: Map<ContractAddress, bool>,
         pub token_uris: Map<u256, ByteArray>,
+
     }
 
     #[event]
@@ -51,10 +55,21 @@ mod tlz {
         SRC5Event: SRC5Component::Event,
         #[flat]
         ERC721EnumerableEvent: ERC721EnumerableComponent::Event,
+        Minted: Minted,
+    }
+    
+    #[derive(Drop, starknet::Event)]
+    struct Minted {
+        #[key]
+        recipient: ContractAddress,
+        #[key]
+        token_id: u256,
     }
 
     #[constructor]
     fn constructor(ref self: ContractState) {
+        let caller = get_caller_address();
+        self.owner.write(caller);
         self.erc721.initializer("ToonLetterz", "TLT", "");
         self.erc721_enumerable.initializer();
     }
@@ -71,30 +86,6 @@ mod tlz {
         }
     }
 
-    #[generate_trait]
-    #[abi(per_item)]
-    impl ExternalImpl of ExternalTrait {
-        #[external(v0)]
-        fn safe_mint(
-            ref self: ContractState,
-            recipient: ContractAddress,
-            token_id: u256,
-            data: Span<felt252>,
-        ) {
-            self.erc721.safe_mint(recipient, token_id, data);
-        }
-
-        #[external(v0)]
-        fn safeMint(
-            ref self: ContractState,
-            recipient: ContractAddress,
-            tokenId: u256,
-            data: Span<felt252>,
-        ) {
-            self.safe_mint(recipient, tokenId, data);
-        }
- }
-
     #[abi(embed_v0)]
     impl ToonLetterzImpl of super::IToonLetterz<ContractState> {
         fn get_token_uri(self: @ContractState, token_id: u256) -> ByteArray {
@@ -102,15 +93,27 @@ mod tlz {
             self.token_uris.read(token_id)
         }
 
-        fn set_token_uri(ref self: ContractState, token_id: u256, uri: ByteArray) {
-            assert(self.erc721.exists(token_id), ERC721Component::Errors::INVALID_TOKEN_ID);
-            self.token_uris.write(token_id, uri);
+        fn set_token_uri(ref self: ContractState, uri: ByteArray) {
+            let caller = get_caller_address();
+            assert!(caller == self.owner.read(), "Only owner can set URI");
+            self.default_uri.write(uri);
         }
 
-        fn mint_item(ref self: ContractState, recipient: ContractAddress, uri: ByteArray) {
-            self.counter.write(self.counter.read() + 1);
-            self.erc721.mint(recipient, self.counter.read() + 1);
-            self.set_token_uri(self.counter.read() + 1, uri);
+        fn mint_item(ref self: ContractState) {
+            let caller = get_caller_address();
+            assert!(!self.has_minted.read(caller), "User has already minted");
+            
+            let next_id = self.counter.read() + 1;
+            self.counter.write(next_id);
+            self.erc721.mint(caller, next_id);
+            self.has_minted.write(caller, true);
+
+            // Store the current default_uri at time of mint
+            let current_uri = self.default_uri.read();
+            self.token_uris.write(next_id, current_uri);
+            
+            // Emit Minted event
+            self.emit(Minted { recipient: caller, token_id: next_id });
         }
     }
 }
