@@ -1,6 +1,6 @@
 # ✉️ ToonLetterz
 
-**ToonLetterz** is the animated newsletter that recaps the top stories in crypto — with a twist of humor. Each issue delivers the latest blockchain chaos in cartoon form and is 100% mintable as an NFT on Starknet.
+**ToonLetterz** is the first animated news media brand that recaps the top stories in crypto — with a twist of humor. Each issue delivers the latest blockchain chaos in cartoon form and is 100% mintable as an NFT on Starknet.
 
 ---
 
