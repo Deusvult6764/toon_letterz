@@ -645,7 +645,7 @@ function App() {
           </motion.div>
           <ScrollReveal delay={0.4}>
             <p className="text-lg sm:text-xl md:text-2xl text-light-text-secondary mb-10 sm:mb-14 max-w-4xl mx-auto font-medium leading-relaxed tracking-wide">
-              ToonLetterz turns boring crypto news into weekly animated masterpieces, blending humor with wit. We don't just report the news—we perform it!
+              ToonLetterz turns crypto news into weekly animated masterpieces, blending humor with wit. We don't just report the news—we perform it!
             </p>
           </ScrollReveal>
           <ScrollReveal delay={0.6}>
