@@ -157,7 +157,7 @@ const WalletDropdown: React.FC<{
                           className="w-7 h-7 rounded-lg" 
                           onError={(e) => {
                             e.currentTarget.style.display = 'none';
-                            e.currentTarget.nextElementSibling!.style.display = 'block';
+                            (e.currentTarget.nextElementSibling as HTMLElement | null)!.style.display = 'block';
                           }}
                         />
                       )}
@@ -168,7 +168,7 @@ const WalletDropdown: React.FC<{
                           className="w-7 h-7 rounded-lg"
                           onError={(e) => {
                             e.currentTarget.style.display = 'none';
-                            e.currentTarget.nextElementSibling!.style.display = 'block';
+                            (e.currentTarget.nextElementSibling as HTMLElement | null)!.style.display = 'block';
                           }}
                         />
                       )}
