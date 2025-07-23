@@ -62,7 +62,7 @@ const HolographicCard: React.FC<HolographicCardProps> = ({
         <>
           <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-brand-primary-500/10 via-brand-secondary-500/10 to-brand-accent-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-lg" />
           <motion.div 
-            className="absolute inset-0 rounded-3xl"
+            className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
             style={{
               background: 'conic-gradient(from 0deg at 50% 50%, transparent 0deg, rgba(59,130,246,0.1) 60deg, transparent 120deg, rgba(168,85,247,0.1) 180deg, transparent 240deg, rgba(34,211,238,0.1) 300deg, transparent 360deg)'
             }}
@@ -72,7 +72,6 @@ const HolographicCard: React.FC<HolographicCardProps> = ({
               repeat: Infinity,
               ease: "linear"
             }}
-            className="opacity-0 group-hover:opacity-100 transition-opacity duration-1000"
           />
         </>
       )}
