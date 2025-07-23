@@ -29,8 +29,8 @@ const InteractiveDemo: React.FC = () => {
       <div className="aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-brand-primary-500/20 via-brand-secondary-500/20 to-brand-accent-500/20 relative">
         {/* Demo Image */}
         <img 
-          src="/toonletterz_demo_.png"
-          alt="ToonLetterz Demo - Lido Hack Episode"
+          src="/tlt-demo.mp4"
+          alt="ToonLetterz Mascot"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
         
@@ -121,10 +121,10 @@ const InteractiveDemo: React.FC = () => {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-xs font-medium tracking-wide">Episode #001</p>
-                <p className="text-sm font-bold tracking-wide">"Lido Hack'd for Pennies"</p>
+                <p className="text-sm font-bold tracking-wide">"ToonLetterz Mascot"</p>
               </div>
               <div className="text-right">
-                <p className="text-xs text-white/80">2:34</p>
+                <p className="text-xs text-white/80">0:09</p>
                 <div className="flex items-center gap-1">
                   <div className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
                   <span className="text-xs">LIVE</span>

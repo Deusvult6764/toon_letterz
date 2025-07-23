@@ -728,9 +728,9 @@ function App() {
           </ScrollReveal>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 mb-16">
             {[
-              { icon: <Lightbulb className="w-7 h-7" />, title: 'The "Aha!" Drop', desc: 'Complex updates made simple through visual stories that actually stick.'},
+              { icon: <Lightbulb className="w-7 h-7" />, title: 'The "Aha!" Drop', desc: 'Crypto news made simple through visual stories that actually stick.'},
               { icon: <MessageCircle className="w-7 h-7" />, title: 'Your Coffee Shop Flex', desc: 'Be that friend who actually understands the news and can explain it to others.' },
-              { icon: <AlertCircle className="w-7 h-7" />, title: 'Skip the Scroll', desc: 'No more endless swiping through boring news feeds that put you to sleep.' },
+              { icon: <AlertCircle className="w-7 h-7" />, title: 'Skip the Scroll', desc: 'No more endless swiping through boring news feeds.' },
               { icon: <Trophy className="w-7 h-7" />, title: 'Mintable Moments', desc: 'Saw it. Got it. Minted it. Turn animated news drops into valuable collectibles.' },
               { icon: <Users className="w-7 h-7" />, title: 'Shareable Brilliance', desc: 'Share crypto content your friends actually get and want to watch!' },
               { icon: <Sparkles className="w-7 h-7" />, title: 'The ToonLetterz Code', desc: 'Animated news ✖ Visual humor ✖ Memes that inform and entertain.' }
@@ -778,7 +778,7 @@ function App() {
                     Mint This Episode as NFT
                   </h3>
                   <p className="text-lg text-light-text-secondary mb-8 tracking-wide leading-relaxed">
-                    Own a piece of crypto history. Each ToonLetterz episode can be minted as a unique collectible on Starknet.
+                    Own a piece of crypto history. Every episode can be minted as a unique collectible on Starknet.
                   </p>
                 </div>
                 <HolographicCard>
@@ -985,7 +985,7 @@ function App() {
             <div className="flex items-center gap-8 text-sm sm:text-base text-light-text-muted">
               <span className="tracking-wide font-medium">© 2025 ToonLetterz</span>
               <span className="tracking-wide font-medium">
-                Built on <span className="text-brand-primary-500 font-bold">Starknet</span>
+                Powered by <span className="text-brand-primary-500 font-bold">Starknet</span>
               </span>
             </div>
           </div>
