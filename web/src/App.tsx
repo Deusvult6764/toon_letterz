@@ -58,7 +58,10 @@ import toonLetterzAbi from './toonLetterzAbi.json';
 // Contract address (replace with actual deployed contract address)
 const CONTRACT_ADDRESS = "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
 
-const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyDTmfukPNgegiKFcyvotbhItrR-heiiPq-YkjNSWu5XCRbCL5d9UdJGg58hNWVvCk0JA/exec';
+// Google Sheets integration constants - REPLACE WITH YOUR ACTUAL FORM VALUES
+const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSd-6ZxAbg0inm1tUDkd_6CmzRa7CQJuQSmF400GUgOWWyujtw/formResponse";
+const EMAIL_FIELD_ID = "entry.1705553243"; // Replace with actual field ID from your Google Form
+const TIMESTAMP_FIELD_ID = "entry.987654321"; // Replace with actual timestamp field ID
 
 // Enhanced Wallet Dropdown Component with Loading States
 const WalletDropdown: React.FC<{
@@ -78,7 +81,6 @@ const WalletDropdown: React.FC<{
         className="w-full flex items-center justify-between gap-2 group relative overflow-hidden"
         disabled={isConnecting}
       >
-        {/* Enhanced shimmer effect */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12"
           initial={{ x: '-100%' }}
@@ -90,7 +92,6 @@ const WalletDropdown: React.FC<{
             ease: "easeInOut"
           }}
         />
-        
         <div className="flex items-center gap-2 relative z-10">
           {isConnecting ? (
             <LoadingSpinner size="sm" className="text-white" />
@@ -113,7 +114,6 @@ const WalletDropdown: React.FC<{
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Enhanced backdrop with blur */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -121,8 +121,6 @@ const WalletDropdown: React.FC<{
               className="fixed inset-0 z-[9998] bg-black/30 backdrop-blur-md"
               onClick={onToggle}
             />
-            
-            {/* Enhanced dropdown with glassmorphism */}
             <motion.div
               initial={{ opacity: 0, y: -20, scale: 0.9 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
@@ -131,9 +129,7 @@ const WalletDropdown: React.FC<{
               className="absolute top-full left-0 right-0 mt-3 z-[9999] bg-light-surface/95 backdrop-blur-3xl rounded-3xl shadow-2xl ring-1 ring-light-border/50 overflow-hidden border border-light-border/30"
               style={{ minWidth: '320px' }}
             >
-              {/* Gradient overlay */}
               <div className="absolute inset-0 bg-gradient-to-br from-brand-primary-500/5 via-brand-secondary-500/5 to-brand-accent-500/5" />
-              
               <div className="relative p-4">
                 <div className="text-xs font-bold text-light-text-muted uppercase tracking-wider px-4 py-3 mb-3 bg-light-surface/50 rounded-2xl">
                   Choose Your Wallet
@@ -223,7 +219,6 @@ const MobileMenu: React.FC<{
     <AnimatePresence>
       {isOpen && (
         <>
-          {/* Enhanced backdrop */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -231,8 +226,6 @@ const MobileMenu: React.FC<{
             className="fixed inset-0 z-[9997] bg-black/60 backdrop-blur-md"
             onClick={onToggle}
           />
-          
-          {/* Enhanced menu with glassmorphism */}
           <motion.div
             initial={{ opacity: 0, x: '100%' }}
             animate={{ opacity: 1, x: 0 }}
@@ -240,11 +233,8 @@ const MobileMenu: React.FC<{
             transition={{ type: "spring", damping: 25, stiffness: 200 }}
             className="fixed top-0 right-0 bottom-0 z-[9998] w-80 max-w-[90vw] bg-light-surface/95 backdrop-blur-3xl border-l border-light-border/50 shadow-2xl"
           >
-            {/* Gradient overlay */}
             <div className="absolute inset-0 bg-gradient-to-br from-brand-primary-500/5 via-brand-secondary-500/5 to-brand-accent-500/5" />
-            
             <div className="flex flex-col h-full relative z-10">
-              {/* Enhanced header */}
               <div className="flex items-center justify-between p-6 border-b border-light-border/50 bg-light-surface/30">
                 <div className="flex items-center gap-3">
                   <motion.div 
@@ -270,10 +260,7 @@ const MobileMenu: React.FC<{
                   <X className="w-6 h-6 text-light-text" />
                 </motion.button>
               </div>
-
-              {/* Content */}
               <div className="flex-1 p-6 space-y-6">
-                {/* Wallet Section */}
                 <div className="border-t border-light-border/50 pt-6">
                   {isConnected ? (
                     <div className="space-y-4">
@@ -321,8 +308,6 @@ const MobileMenu: React.FC<{
                   )}
                 </div>
               </div>
-
-              {/* Enhanced footer */}
               <div className="p-6 border-t border-light-border/50 bg-light-surface/30">
                 <div className="text-center text-sm text-light-text-muted">
                   Built on <span className="text-brand-primary-500 font-bold">Starknet</span>
@@ -384,7 +369,6 @@ function App() {
         setShowWalletDropdown(false);
       }
     };
-
     document.addEventListener('mousedown', handleClickOutside);
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, [showWalletDropdown]);
@@ -399,20 +383,18 @@ function App() {
 
   const loadUserNFTs = async () => {
     if (!address) return;
-    
     try {
       const balance = await contract.balanceOf(address);
       const nftCount = parseInt(balance.toString());
       const nfts = [];
-      
       for (let i = 0; i < nftCount; i++) {
         const tokenId = await contract.tokenOfOwnerByIndex(address, i);
         nfts.push(parseInt(tokenId.toString()));
       }
-      
       setUserNFTs(nfts);
     } catch (error) {
       console.error('Error loading NFTs:', error);
+      showToastMessage('Failed to load NFTs. Please try again.', 'error');
     }
   };
 
@@ -421,7 +403,6 @@ function App() {
       showToastMessage('Please connect your wallet first', 'error');
       return;
     }
-
     setIsMinting(true);
     try {
       setMintStatus('Minting in progress...');
@@ -429,7 +410,7 @@ function App() {
       await provider.waitForTransaction(result.transaction_hash);
       setMintStatus('Successfully minted! 🎉');
       showToastMessage('NFT minted successfully! 🎉', 'success');
-      loadUserNFTs(); // Refresh NFT list
+      loadUserNFTs();
     } catch (error) {
       console.error('Minting error:', error);
       setMintStatus('Minting failed. Please try again.');
@@ -439,29 +420,56 @@ function App() {
     }
   };
 
+  // Enhanced Google Sheets submission
+  const submitToGoogleSheets = async (email: string) => {
+    try {
+      // Validate email format
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        throw new Error('Invalid email format');
+      }
+
+      // Create form data for Google Sheets
+      const formData = new FormData();
+      formData.append(EMAIL_FIELD_ID, email);
+      formData.append(TIMESTAMP_FIELD_ID, new Date().toISOString());
+
+      // Submit to Google Sheets via Google Forms
+      const response = await fetch(GOOGLE_FORM_ACTION, {
+        method: 'POST',
+        mode: 'no-cors',
+        body: formData
+      });
+
+      return true; // no-cors mode doesn't return response, assume success
+    } catch (error) {
+      console.error('Error submitting to Google Sheets:', error);
+      throw error;
+    }
+  };
+
   const handleToonListSubmit = async () => {
     if (!email) {
       showToastMessage('Please enter your email address', 'error');
       return;
     }
-    
     if (!email.includes('@')) {
       showToastMessage('Please enter a valid email address', 'error');
       return;
     }
-    
+
     setIsSubmittingEmail(true);
-    
-    // Simulate API call
-    await new Promise(resolve => setTimeout(resolve, 1500));
-    
-    setToonListMsg('🎉 Welcome Tooner, Stay Toon\'d!');
-    showToastMessage('Successfully joined the ToonList! 🎉', 'success');
-    setEmail('');
-    setIsSubmittingEmail(false);
-    
-    // Clear message after 5 seconds
-    setTimeout(() => setToonListMsg(''), 5000);
+    try {
+      await submitToGoogleSheets(email);
+      setToonListMsg('🎉 Welcome Tooner, Stay Toon\'d!');
+      showToastMessage('Successfully joined the ToonList! 🎉', 'success');
+      setEmail('');
+      setTimeout(() => setToonListMsg(''), 5000);
+    } catch (error) {
+      showToastMessage('Failed to join ToonList. Please try again.', 'error');
+    } finally {
+      setIsSubmittingEmail(false);
+    }
   };
 
   const handleConnectWallet = async (connector: any) => {
@@ -483,7 +491,6 @@ function App() {
     const emailSection = document.getElementById('email-signup');
     if (emailSection) {
       emailSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      // Enhanced highlight effect
       setTimeout(() => {
         emailSection.classList.add('ring-4', 'ring-brand-primary-500/50', 'animate-pulse');
         setTimeout(() => {
@@ -496,7 +503,7 @@ function App() {
   const faqs = [
     { 
       q: "What exactly is ToonLetterz?", 
-      a: "ToonLetterz transforms complex crypto news into engaging animated stories. Think of it as your weekly crypto briefing, but actually entertaining and easy to understand." 
+      a: "ToonLetterz is the first animated newsletter, we don't just report the news—we perform it. Visual storytelling meets crypto news with a dash of humor that actually makes you remember what happened." 
     },
     { 
       q: "How often do new Toonz drop?", 
@@ -508,7 +515,7 @@ function App() {
     },
     { 
       q: "What makes this different from other crypto news platforms?", 
-      a: "ToonLetterz is the first animated newsletter, we don't just report the news—we perform it. Visual storytelling meets crypto news with a dash of humor that actually makes you remember what happened." 
+      a: "ToonLetterz transforms complex crypto news into engaging animated stories. Think of it as your weekly crypto briefing, but actually entertaining and easy to understand."
     },
     { 
       q: "Is this suitable for crypto beginners?", 
@@ -518,29 +525,18 @@ function App() {
 
   const isConnected = status === 'connected';
 
-  // Launch countdown (set to 30 days from now for demo)
-  const launchDate = new Date();
-  launchDate.setDate(launchDate.getDate() + 30);
-
   return (
     <div className="min-h-screen relative overflow-x-hidden bg-light-bg text-light-text">
-      {/* Background Components */}
       <AnimatedBackground />
       <ParticleField />
-
-      {/* Toast Notifications */}
       <ToastNotification
         message={toastMessage}
         type={toastType}
         isVisible={showToast}
         onClose={() => setShowToast(false)}
       />
-
-      {/* Enhanced Header with glassmorphism */}
       <header className="fixed top-0 left-0 right-0 z-50 backdrop-blur-3xl bg-light-surface/90 border-b border-light-border/50 transition-all duration-300 shadow-lg">
-        {/* Gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-brand-primary-500/5 via-brand-secondary-500/5 to-brand-accent-500/5" />
-        
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between relative z-10">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
@@ -563,8 +559,6 @@ function App() {
               ToonLetterz
             </span>
           </motion.div>
-
-          {/* Desktop - Enhanced Wallet Connection */}
           <div className="hidden md:flex items-center gap-4">
             {!isConnected ? (
               <WalletDropdown
@@ -600,8 +594,6 @@ function App() {
               </motion.div>
             )}
           </div>
-
-          {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center gap-3">
             <motion.button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -614,8 +606,6 @@ function App() {
           </div>
         </div>
       </header>
-
-      {/* Mobile Menu */}
       <MobileMenu
         isOpen={mobileMenuOpen}
         onToggle={() => setMobileMenuOpen(!mobileMenuOpen)}
@@ -627,8 +617,6 @@ function App() {
         onConnect={handleConnectWallet}
         isConnecting={isConnecting}
       />
-
-      {/* Enhanced Hero Section */}
       <section className="pt-28 sm:pt-36 pb-20 sm:pb-24 px-4 sm:px-6 relative">
         <div className="max-w-6xl mx-auto text-center">
           <ScrollReveal>
@@ -637,11 +625,8 @@ function App() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
               className="mb-8 sm:mb-10"
-            >
-            
-            </motion.div>
+            />
           </ScrollReveal>
-
           <motion.div
             initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
@@ -653,19 +638,15 @@ function App() {
               className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 via-brand-accent-500 to-brand-warning-500 bg-clip-text text-transparent drop-shadow-2xl font-display leading-tight tracking-tight"
               stagger={0.08}
             />
-            {/* Enhanced glowing text shadow effect */}
             <div className="absolute inset-0 text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-black text-brand-primary-500/20 blur-3xl -z-10 tracking-tight animate-pulse">
               Crypto News You Can Enjoy, Share, and Collect
             </div>
           </motion.div>
-
           <ScrollReveal delay={0.4}>
             <p className="text-lg sm:text-xl md:text-2xl text-light-text-secondary mb-10 sm:mb-14 max-w-4xl mx-auto font-medium leading-relaxed tracking-wide">
               ToonLetterz turns boring crypto news into weekly animated masterpieces, blending humor with wit. We don't just report the news—we perform it!
             </p>
           </ScrollReveal>
-
-          {/* Enhanced Waitlist Form */}
           <ScrollReveal delay={0.6}>
             <HolographicCard className="max-w-3xl mx-auto mb-20" id="email-signup">
               <div className="p-8 sm:p-10">
@@ -677,7 +658,6 @@ function App() {
                     Be first to experience crypto news come alive in <em>view-time</em>
                   </p>
                 </div>
-                
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
                   <div className="flex-1 relative group">
                     <input
@@ -688,7 +668,6 @@ function App() {
                       className="w-full px-6 py-4 rounded-2xl bg-light-surface/50 backdrop-blur-xl border border-light-border text-light-text placeholder-light-text-muted focus:ring-2 focus:ring-brand-primary-500 focus:border-brand-primary-500 outline-none transition-all duration-300 tracking-wide text-lg group-hover:border-brand-primary-500/30 shadow-lg"
                       disabled={isSubmittingEmail}
                     />
-                    {/* Enhanced input glow effect */}
                     <div className="absolute inset-0 rounded-2xl bg-gradient-to-r from-brand-primary-500/10 via-brand-secondary-500/10 to-brand-accent-500/10 opacity-0 group-focus-within:opacity-100 transition-opacity duration-300 pointer-events-none blur-xl" />
                   </div>
                   <GlowingButton 
@@ -711,7 +690,6 @@ function App() {
                     )}
                   </GlowingButton>
                 </div>
-                
                 <AnimatePresence>
                   {toonListMsg && (
                     <motion.p
@@ -727,8 +705,6 @@ function App() {
               </div>
             </HolographicCard>
           </ScrollReveal>
-
-          {/* Enhanced scroll indicator */}
           <motion.div
             animate={{ y: [0, 15, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
@@ -743,25 +719,6 @@ function App() {
           </motion.div>
         </div>
       </section>
-
-      {/* Trust Signals Section */}
-      {/*
-      <section className="py-16 sm:py-20 px-4 sm:px-6 bg-gradient-to-br from-brand-primary-500/5 via-brand-secondary-500/5 to-brand-accent-500/5">
-        <div className="max-w-6xl mx-auto">
-          <ScrollReveal>
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-black text-center mb-12 sm:mb-16 bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500 bg-clip-text text-transparent font-display tracking-tight">
-              Trusted by the Community
-            </h2>
-          </ScrollReveal>
-          
-          <ScrollReveal delay={0.3}>
-            <TrustSignals />
-          </ScrollReveal>
-        </div>
-      </section>
-      */}
-
-      {/* Value Proposition Section */}
       <section className="py-20 sm:py-24 px-4 sm:px-6">
         <div className="max-w-6xl mx-auto">
           <ScrollReveal>
@@ -769,10 +726,9 @@ function App() {
               Why Your Brain Will Thank You
             </h2>
           </ScrollReveal>
-
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 mb-16">
             {[
-              { icon: <Lightbulb className="w-7 h-7" />, title: 'The "Aha!" Drop', desc: 'Complex updates made simple through visual stories that actually stick in your memory.'},
+              { icon: <Lightbulb className="w-7 h-7" />, title: 'The "Aha!" Drop', desc: 'Complex updates made simple through visual stories that actually stick.'},
               { icon: <MessageCircle className="w-7 h-7" />, title: 'Your Coffee Shop Flex', desc: 'Be that friend who actually understands the news and can explain it to others.' },
               { icon: <AlertCircle className="w-7 h-7" />, title: 'Skip the Scroll', desc: 'No more endless swiping through boring news feeds that put you to sleep.' },
               { icon: <Trophy className="w-7 h-7" />, title: 'Mintable Moments', desc: 'Saw it. Got it. Minted it. Turn animated news drops into valuable collectibles.' },
@@ -804,8 +760,6 @@ function App() {
           </div>
         </div>
       </section>
-      
-      {/* Enhanced Preview Section with Interactive Demo */}
       <section id="preview" className="py-20 sm:py-24 px-4 sm:px-6 bg-gradient-to-br from-brand-primary-500/5 via-brand-secondary-500/5 to-brand-accent-500/5">
         <div className="max-w-7xl mx-auto">
           <ScrollReveal>
@@ -813,14 +767,10 @@ function App() {
               See It. Get It. Own It.
             </h2>
           </ScrollReveal>
-
           <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 items-center">
-            {/* Interactive Demo */}
             <ScrollReveal direction="left">
               <InteractiveDemo />
             </ScrollReveal>
-
-            {/* Enhanced Minting Interface */}
             <ScrollReveal direction="right">
               <div className="space-y-8 sm:space-y-10">
                 <div>
@@ -831,8 +781,6 @@ function App() {
                     Own a piece of crypto history. Each ToonLetterz episode can be minted as a unique collectible on Starknet.
                   </p>
                 </div>
-
-                {/* Enhanced Wallet Connection & Minting */}
                 <HolographicCard>
                   <div className="space-y-6">
                     {!isConnected ? (
@@ -874,7 +822,6 @@ function App() {
                             />
                           </div>
                         </motion.div>
-                        
                         <GlowingButton 
                           onClick={handleMint}
                           size="lg"
@@ -894,7 +841,6 @@ function App() {
                             </>
                           )}
                         </GlowingButton>
-                        
                         {mintStatus && (
                           <motion.div 
                             className="p-4 rounded-2xl bg-brand-primary-500/10 border border-brand-primary-500/20"
@@ -910,14 +856,12 @@ function App() {
                     )}
                   </div>
                 </HolographicCard>
-
-                {/* Enhanced Benefits */}
                 <div className="space-y-4">
                   {[
                     'Own the moment crypto history was made',
                     'Trade and collect rare episodes',
                     'Collect, share, and level up on the Toonerboard',
-                    'Stay Toon\'d for more!'
+                    'Toon In for more!'
                   ].map((benefit, index) => (
                     <motion.div
                       key={index}
@@ -939,8 +883,6 @@ function App() {
           </div>
         </div>
       </section>
-
-      {/* Enhanced FAQ Section */}
       <section id="faq" className="py-20 sm:py-24 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
@@ -948,7 +890,6 @@ function App() {
               Questions? We've Got Answers.
             </h2>
           </ScrollReveal>
-
           <div className="space-y-6">
             {faqs.map((faq, index) => (
               <ScrollReveal key={index} delay={index * 0.1}>
@@ -973,7 +914,6 @@ function App() {
                         </div>
                       </motion.div>
                     </div>
-                    
                     <AnimatePresence>
                       {openFaq === index && (
                         <motion.div
@@ -996,8 +936,6 @@ function App() {
           </div>
         </div>
       </section>
-
-      {/* Enhanced Final CTA Section */}
       <section className="py-20 sm:py-24 px-4 sm:px-6 bg-gradient-to-br from-brand-primary-500/10 via-brand-secondary-500/10 to-brand-accent-500/10">
         <div className="max-w-4xl mx-auto text-center">
           <ScrollReveal>
@@ -1008,7 +946,6 @@ function App() {
               Join the ToonList and be first to experience crypto news come alive!
             </p>
           </ScrollReveal>
-
           <ScrollReveal delay={0.3}>
             <motion.div
               whileHover={{ scale: 1.05 }}
@@ -1027,8 +964,6 @@ function App() {
           </ScrollReveal>
         </div>
       </section>
-
-      {/* Enhanced Footer */}
       <footer className="py-12 sm:py-16 px-4 sm:px-6 border-t border-light-border/50 bg-gradient-to-br from-light-surface/50 to-light-surface/30 backdrop-blur-xl">
         <div className="max-w-6xl mx-auto">
           <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
@@ -1047,7 +982,6 @@ function App() {
                 ToonLetterz
               </span>
             </motion.div>
-            
             <div className="flex items-center gap-8 text-sm sm:text-base text-light-text-muted">
               <span className="tracking-wide font-medium">© 2025 ToonLetterz</span>
               <span className="tracking-wide font-medium">
@@ -1055,8 +989,6 @@ function App() {
               </span>
             </div>
           </div>
-          
-          {/* Additional footer content */}
           <div className="mt-8 pt-6 border-t border-light-border/30 text-center">
             <p className="text-sm text-light-text-muted font-medium">
               Making crypto news fun, one Toon at a time 🎬
