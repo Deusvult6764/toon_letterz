@@ -48,10 +48,10 @@ import LoadingSpinner from './components/LoadingSpinner';
 import InteractiveDemo from './components/InteractiveDemo';
 import TrustSignals from './components/TrustSignals';
 
-// Google Sheets integration constants - REPLACE WITH YOUR ACTUAL FORM VALUES
-const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSd-6ZxAbg0inm1tUDkd_6CmzRa7CQJuQSmF400GUgOWWyujtw/formResponse";
-const EMAIL_FIELD_ID = "entry.1705553243"; // Replace with actual field ID from your Google Form
-const TIMESTAMP_FIELD_ID = "entry.987654321"; // Replace with actual timestamp field ID
+// Google Sheets integration constants - now loaded from environment variables
+const GOOGLE_FORM_ACTION = process.env.REACT_APP_GOOGLE_FORM_ACTION!;
+const EMAIL_FIELD_ID = process.env.REACT_APP_EMAIL_FIELD_ID!;
+const TIMESTAMP_FIELD_ID = process.env.REACT_APP_TIMESTAMP_FIELD_ID!;
 
 // Enhanced Mobile Menu Component (without wallet features)
 const MobileMenu: React.FC<{
@@ -386,12 +386,12 @@ function App() {
           </ScrollReveal>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10 mb-16">
             {[
-              { icon: <Lightbulb className="w-7 h-7" />, title: 'The "Aha!" Drop', desc: 'Crypto news made simple through visual stories that actually stick.'},
-              { icon: <MessageCircle className="w-7 h-7" />, title: 'Your Coffee Shop Flex', desc: 'Be that friend who actually understands the news and can explain it to others.' },
-              { icon: <AlertCircle className="w-7 h-7" />, title: 'Skip the Scroll', desc: 'No more endless swiping through boring news feeds.' },
-              { icon: <Trophy className="w-7 h-7" />, title: 'Mintable Moments', desc: 'Stay tuned for future collectible features!' },
-              { icon: <Users className="w-7 h-7" />, title: 'Shareable Brilliance', desc: 'Share crypto content your friends actually get and want to watch!' },
-              { icon: <Sparkles className="w-7 h-7" />, title: 'The ToonLetterz Code', desc: 'Animated news ✖ Visual humor ✖ Memes that inform and entertain.' }
+              { icon: <Sparkles className="w-7 h-7" />, title: 'Attention-Span Optimized', desc: 'Headlines you’ll absorb in under 11 seconds.' },
+              { icon: <Lightbulb className="w-7 h-7" />, title: 'The "Aha!" Drop', desc: 'Crypto made visual. Bite-sized stories that stick — no whitepapers required.'},
+              { icon: <Trophy className="w-7 h-7" />, title: 'Mintable Moments', desc: 'Saw it. Got it. Minted it. Collect historic crypto moments on Starknet.' },
+              { icon: <AlertCircle className="w-7 h-7" />, title: 'Skip the Scroll', desc: 'Forget dry feeds and text walls. Watch your way through the week’s top stories.' },
+              { icon: <Users className="w-7 h-7" />, title: 'Unhinged Humor', desc: 'Because the only thing rarer than a bull market is a good LOL!' },
+              { icon: <MessageCircle className="w-7 h-7" />, title: 'Your Coffee Shop Flex', desc: 'Be the friend who actually gets crypto - and can explain it without sounding like a chart.' },
             ].map((feature, index) => (
               <ScrollReveal key={index} delay={index * 0.1}>
                 <HolographicCard className="text-center group h-full">
@@ -479,7 +479,8 @@ function App() {
           </div>
         </div>
       </section>
-      <section id="faq" className="py-20 sm:py-24 px-4 sm:px-6">
+      {/* REMOVE FAQ SECTION BELOW */}
+      {/* <section id="faq" className="py-20 sm:py-24 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto">
           <ScrollReveal>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-center mb-16 sm:mb-20 bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500 bg-clip-text text-transparent font-display tracking-tight">
@@ -531,7 +532,7 @@ function App() {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
       <section className="py-20 sm:py-24 px-4 sm:px-6 bg-gradient-to-br from-brand-primary-500/10 via-brand-secondary-500/10 to-brand-accent-500/10">
         <div className="max-w-4xl mx-auto text-center">
           <ScrollReveal>
