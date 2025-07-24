@@ -48,10 +48,10 @@ import LoadingSpinner from './components/LoadingSpinner';
 import InteractiveDemo from './components/InteractiveDemo';
 import TrustSignals from './components/TrustSignals';
 
-// Google Sheets integration constants - now loaded from environment variables
-const GOOGLE_FORM_ACTION = process.env.REACT_APP_GOOGLE_FORM_ACTION!;
-const EMAIL_FIELD_ID = process.env.REACT_APP_EMAIL_FIELD_ID!;
-const TIMESTAMP_FIELD_ID = process.env.REACT_APP_TIMESTAMP_FIELD_ID!;
+// Google Sheets integration constants - REPLACE WITH YOUR ACTUAL FORM VALUES
+const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSd-6ZxAbg0inm1tUDkd_6CmzRa7CQJuQSmF400GUgOWWyujtw/formResponse";
+const EMAIL_FIELD_ID = "entry.1705553243"; // Replace with actual field ID from your Google Form
+const TIMESTAMP_FIELD_ID = "entry.987654321"; // Replace with actual timestamp field ID
 
 // Enhanced Mobile Menu Component (without wallet features)
 const MobileMenu: React.FC<{
