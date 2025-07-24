@@ -51,6 +51,7 @@ import TrustSignals from './components/TrustSignals';
 // Google Sheets integration constants - REPLACE WITH YOUR ACTUAL FORM VALUES
 const GOOGLE_FORM_ACTION = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSd-6ZxAbg0inm1tUDkd_6CmzRa7CQJuQSmF400GUgOWWyujtw/formResponse";
 const EMAIL_FIELD_ID = "entry.1705553243"; // Replace with actual field ID from your Google Form
+const NAME_FIELD_ID = "entry.881540528"; // <-- Replace with your actual name field ID
 const TIMESTAMP_FIELD_ID = "entry.987654321"; // Replace with actual timestamp field ID
 
 // Enhanced Mobile Menu Component (without wallet features)
@@ -120,6 +121,7 @@ const MobileMenu: React.FC<{
 };
 
 function App() {
+  const [name, setName] = useState(''); // <-- Add name state
   const [email, setEmail] = useState('');
   const [toonListMsg, setToonListMsg] = useState('');
   const [openFaq, setOpenFaq] = useState<number | null>(null);
@@ -138,27 +140,31 @@ function App() {
   };
 
   // Enhanced Google Sheets submission
-  const submitToGoogleSheets = async (email: string) => {
+  const submitToGoogleSheets = async (name: string, email: string) => {
     try {
       // Validate email format
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         throw new Error('Invalid email format');
       }
+      if (!name.trim()) {
+        throw new Error('Name is required');
+      }
 
       // Create form data for Google Sheets
       const formData = new FormData();
+      formData.append(NAME_FIELD_ID, name); // <-- Add name to form data
       formData.append(EMAIL_FIELD_ID, email);
       formData.append(TIMESTAMP_FIELD_ID, new Date().toISOString());
 
       // Submit to Google Sheets via Google Forms
-      const response = await fetch(GOOGLE_FORM_ACTION, {
+      await fetch(GOOGLE_FORM_ACTION, {
         method: 'POST',
         mode: 'no-cors',
         body: formData
       });
 
-      return true; // no-cors mode doesn't return response, assume success
+      return true;
     } catch (error) {
       console.error('Error submitting to Google Sheets:', error);
       throw error;
@@ -166,6 +172,10 @@ function App() {
   };
 
   const handleToonListSubmit = async () => {
+    if (!name.trim()) {
+      showToastMessage('Please enter your name', 'error');
+      return;
+    }
     if (!email) {
       showToastMessage('Please enter your email address', 'error');
       return;
@@ -177,9 +187,10 @@ function App() {
 
     setIsSubmittingEmail(true);
     try {
-      await submitToGoogleSheets(email);
+      await submitToGoogleSheets(name, email); // <-- Pass name and email
       setToonListMsg('🎉 Welcome Tooner, Stay Toon\'d!');
       showToastMessage('Successfully joined the ToonList! 🎉', 'success');
+      setName('');
       setEmail('');
       setTimeout(() => setToonListMsg(''), 5000);
     } catch (error) {
@@ -317,6 +328,16 @@ function App() {
                   </p>
                 </div>
                 <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                  <div className="flex-1 relative group">
+                    <input
+                      type="text"
+                      placeholder="Your name..."
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                      className="w-full px-6 py-4 rounded-2xl bg-light-surface/50 backdrop-blur-xl border border-light-border text-light-text placeholder-light-text-muted focus:ring-2 focus:ring-brand-primary-500 focus:border-brand-primary-500 outline-none transition-all duration-300 tracking-wide text-lg group-hover:border-brand-primary-500/30 shadow-lg mb-4"
+                      disabled={isSubmittingEmail}
+                    />
+                  </div>
                   <div className="flex-1 relative group">
                     <input
                       type="email"
