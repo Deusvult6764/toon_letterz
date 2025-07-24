@@ -29,7 +29,7 @@ const InteractiveDemo: React.FC = () => {
       <div className="aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-brand-primary-500/20 via-brand-secondary-500/20 to-brand-accent-500/20 relative">
         {/* Demo Image */}
         <img 
-          src="/tlt-demo.mp4"
+          src="/mascot.mp4"
           alt="ToonLetterz Mascot"
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
         />
