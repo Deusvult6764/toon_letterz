@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Play, Pause, Volume2, VolumeX, Maximize2 } from 'lucide-react';
 
@@ -7,36 +7,56 @@ const InteractiveDemo: React.FC = () => {
   const [isMuted, setIsMuted] = useState(true);
   const [progress, setProgress] = useState(0);
 
+  const videoRef = useRef<HTMLVideoElement | null>(null);
+
   const togglePlay = () => {
-    setIsPlaying(!isPlaying);
-    if (!isPlaying) {
-      // Simulate video progress
-      const interval = setInterval(() => {
-        setProgress(prev => {
-          if (prev >= 100) {
-            clearInterval(interval);
-            setIsPlaying(false);
-            return 0;
-          }
-          return prev + 2;
-        });
-      }, 100);
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isPlaying) {
+      video.pause();
+    } else {
+      video.play();
     }
+    setIsPlaying(!isPlaying);
   };
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const updateProgress = () => {
+      const percentage = (video.currentTime / video.duration) * 100;
+      setProgress(percentage);
+    };
+
+    video.addEventListener('timeupdate', updateProgress);
+    return () => {
+      video.removeEventListener('timeupdate', updateProgress);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
 
   return (
     <div className="relative group">
       <div className="aspect-video rounded-2xl overflow-hidden bg-gradient-to-br from-brand-primary-500/20 via-brand-secondary-500/20 to-brand-accent-500/20 relative">
-        {/* Demo Image */}
-        <img 
+        {/* Actual video */}
+        <video
+          ref={videoRef}
           src="/0723.mp4"
-          alt="ToonLetterz Mascot"
+          muted={isMuted}
           className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
+          loop
         />
-        
+
         {/* Overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        
+
         {/* Play controls */}
         <div className="absolute inset-0 flex items-center justify-center">
           <motion.button
@@ -87,7 +107,7 @@ const InteractiveDemo: React.FC = () => {
                     transition={{ duration: 0.1 }}
                   />
                 </div>
-                
+
                 {/* Controls */}
                 <div className="flex items-center justify-between text-white">
                   <div className="flex items-center gap-3">
@@ -102,10 +122,10 @@ const InteractiveDemo: React.FC = () => {
                       )}
                     </button>
                     <span className="text-xs font-mono">
-                      {Math.floor(progress / 4)}:{(Math.floor(progress % 4) * 15).toString().padStart(2, '0')} / 2:34
+                      {Math.floor((progress / 100) * 2)}:{Math.floor(((progress / 100) * 34) % 60).toString().padStart(2, '0')} / 2:34
                     </span>
                   </div>
-                  
+
                   <button className="p-1 hover:bg-white/20 rounded transition-colors duration-200">
                     <Maximize2 className="w-4 h-4" />
                   </button>

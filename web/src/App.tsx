@@ -443,7 +443,7 @@ function App() {
         <div className="max-w-7xl mx-auto">
           <ScrollReveal>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-center mb-16 sm:mb-20 bg-gradient-to-r from-brand-primary-500 via-brand-secondary-500 to-brand-accent-500 bg-clip-text text-transparent font-display tracking-tight">
-              See It. Get It. Enjoy It.
+              See It. Enjoy It. Collect It.
             </h2>
           </ScrollReveal>
           <div className="grid lg:grid-cols-2 gap-12 sm:gap-16 items-center">
