@@ -95,13 +95,13 @@ mod tlz {
 
         fn set_token_uri(ref self: ContractState, uri: ByteArray) {
             let caller = get_caller_address();
-            assert!(caller == self.owner.read(), "Only owner can set URI");
+            assert!(caller == self.owner.read(), "Stop trying to set the URI, you are not the owner!");
             self.default_uri.write(uri);
         }
 
         fn mint_item(ref self: ContractState) {
             let caller = get_caller_address();
-            assert!(!self.has_minted.read(caller), "User has already minted");
+            assert!(!self.has_minted.read(caller), "Don\'t be a greedy Tooner! You can only mint once.");
             
             let next_id = self.counter.read() + 1;
             self.counter.write(next_id);
